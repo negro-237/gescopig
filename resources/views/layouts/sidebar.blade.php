@@ -82,6 +82,9 @@
                             <li><a href="{!! url('notes/search/13') !!}">Enr notes de deliberation YDE</a></li>
                             -->
                         @endcan
+                        @can('lock notes')
+                            <li><a href="{!! url('notes/lock') !!}">Vérouiller/Débloquer les notes</a></li>
+                        @endcan
                         <!--
                         @can('create deliberation')
                             <li><a href="{!! url('notes/search/4') !!}">Liste des etudiants en 2e session</a></li>

@@ -74,10 +74,19 @@
                 @if($contrat->notes->where('enseignement_id', $enseignement->id)->first())
                     @if($type == 'cc')
                         $("#"+ {!! $contrat->id !!}).val({!! $contrat->notes->where('enseignement_id', $enseignement->id)->first()->cc !!})
+                        @if($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session1 == 0 || $contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0)
+                            $("#"+ {!! $contrat->id !!}).prop('disabled', 'true');
+                        @endif
                     @elseif($type == 'session1')
                         $("#"+ {!! $contrat->id !!}).val({!! $contrat->notes->where('enseignement_id', $enseignement->id)->first()->session1 !!})
+                        @if($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session1 == 0)
+                            $("#"+ {!! $contrat->id !!}).prop('disabled', 'true');
+                        @endif
                     @else
                         $("#"+ {!! $contrat->id !!}).val({!! $contrat->notes->where('enseignement_id', $enseignement->id)->first()->session2 !!})
+                        @if($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0)
+                            $("#"+ {!! $contrat->id !!}).prop('disabled', 'true');
+                        @endif
                     @endif
                 @endif
             @endforeach

@@ -16,7 +16,7 @@
     @endforeach
 </div>
 <hr>
-<!--
+
 <div class="form-group @if ($errors->has('password')) has-error @endif">
     {!! Form::label('password', 'Password') !!}<br>
     {!! Form::password('password', array('class' => 'form-control')) !!}
@@ -25,4 +25,3 @@
     {!! Form::label('password', 'Confirm Password') !!}<br>
     {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
 </div>
--->

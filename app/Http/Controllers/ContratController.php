@@ -15,6 +15,7 @@ use App\Repositories\ApprenantRepository;
 use App\Repositories\ContratRepository;
 use App\Repositories\CycleRepository;
 use App\Repositories\SpecialiteRepository;
+use App\Repositories\VilleRepository;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use DB;
@@ -29,8 +30,9 @@ class ContratController extends Controller
     protected $anneeAcademique;
     protected $contratRepository;
     protected $academicYearRepository;
+    protected $villeRepository;
 
-    public function __construct(ContratRepository $contratRepository, AcademicYearRepository $academicYearRepository ,ApprenantRepository $apprenantRepository, SpecialiteRepository $specialiteRepository, CycleRepository $cycleRepository)
+    public function __construct(ContratRepository $contratRepository, AcademicYearRepository $academicYearRepository ,ApprenantRepository $apprenantRepository, SpecialiteRepository $specialiteRepository, CycleRepository $cycleRepository, VilleRepository $villeRepository)
     {
         $this->contratRepository = $contratRepository;
         $this->apprenantRepository = $apprenantRepository;
@@ -39,6 +41,7 @@ class ContratController extends Controller
         $inscrip = Inscrip::getCurrentAcademicYear();
         $this->anneeAcademique = AcademicYear::find($inscrip);
         $this->academicYearRepository = $academicYearRepository;
+        $this->villeRepository = $villeRepository;
     }
 
     /**
@@ -279,8 +282,11 @@ class ContratController extends Controller
         $apprenants = $this->apprenantRepository->orderBy('id', 'desc')->paginate(3);
         $spe = $this->specialiteRepository->all();
         $c = $this->cycleRepository->all();
+        $v = $this->villeRepository->all();
+        
         $cycles = array();
         $specialites = array();
+        $cities = array();
         $academicYears = [];
         $ay = $this->academicYearRepository->all();
         foreach ($ay as $a){
@@ -294,7 +300,11 @@ class ContratController extends Controller
             $cycles[$cycle->id] = $cycle->label. ' ' .$cycle->niveau;
         }
 
-        return view('contrats.edit', compact('contrat', 'cycles', 'apprenants', 'specialites', 'academicYears'));
+        foreach($v as $city){
+            $cities[$city->id] = $city->nom;
+        }
+
+        return view('contrats.edit', compact('contrat', 'cycles', 'apprenants', 'specialites', 'academicYears', 'cities'));
     }
 
     /**

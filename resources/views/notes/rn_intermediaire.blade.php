@@ -105,7 +105,7 @@
                 <h1 class="text-center">RELEVE DE NOTES INTERMEDIAIRE</h1>
                 <h1 class="text-center">Résultat des Examens {{ $semestre->title. ' ' .$session }}</h1>
                 <h1 class="text-center">Mention : Science de gestion</h1>
-                <h1 class="text-center">Spécialité : {{ $contrats->first()->specialite->slug. " (" .$contrats->first()->specialite->title. ")" }}</h1>
+                
                 <h1 class="text-center">Ville : {{ $ville->nom }}</h1>
                 <h1 class="text-center">Année Académique : {{ $academicYear->debut. '-' .$academicYear->fin }}</h1>
             </div> 

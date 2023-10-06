@@ -99,9 +99,9 @@
     <script>
         $(function(){
             $('#inscriptionModal').on('show.bs.modal', function(e){
-                console.log('in')
+                //console.log('in')
                 var button = $(e.relatedTarget);
-                console.log(button)
+                //console.log(button)
                 var id = button.data('id');
                 var input = '<input name="apprenant_id" type="hidden" value="'+ id +'"/>';
                 $('#apprenant_id').html(input)

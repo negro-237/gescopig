@@ -17,6 +17,9 @@ Auth::routes();
 Route::prefix('admin')->namespace('Back')->group(function () { 
     Route::name('admin')->get('/', 'AdminController@index');
 });
+Route::get('/test', function() {
+    return $data = \App\Models\Contrat::find(408)->notes;
+});
 Route::prefix('')->middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('home', 'HomeController@index');
@@ -112,7 +115,8 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('catUes', 'CatUeController')->except('show');
     Route::resource('ues', 'UeController')->except('show');
 
-    
+    Route::get('notes/locked/{session}/{academic_year}', 'NoteController@lock_notes');
+    Route::get('notes/lock', 'NoteController@getDataForLockNotes');
     Route::get('notes/search/{n}/{type?}/{ville_id?}', 'NoteController@search')->name('notes.search');
     // Routes pour l'enregistrement des notes
     Route::get('notes/affiche/{semestre}/{specialite}', 'NoteController@affiche')->name('notes.affiche');
@@ -135,7 +139,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('notes', 'NoteController')->except('store', 'show');
 
     Route::get('notes/show/{type}/{id}', 'NoteController@show')->name('notes.show');
-    Route::get('notes/showDouala/{type}/{id}/{ville_id}', 'NoteController@showDouala')->name('notes.showDouala');
+    Route::get('notes/show-notes/{type}/{id}/{ville_id}', 'NoteController@showNotes')->name('notes.show-notes');
     Route::get('notes/showYaounde/{type}/{id}', 'NoteController@showYaounde')->name('notes.showYaounde');
     
     Route::post('notes/{type}/{enseignement}', 'NoteController@store')->name('notes.store');

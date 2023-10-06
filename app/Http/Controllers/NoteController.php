@@ -359,13 +359,13 @@ class NoteController extends Controller
         return view('notes.show', compact('enseignement', 'contrats' , 'type'));
     }
 
-    public function showDouala($type, $id, $ville_id) {
+    public function showNotes($type, $id, $ville_id) {
         
         $enseignement = $this->enseignementRepository->findWithoutFail($id);
         $specialite = $enseignement->specialite->id;
         $cycle = $enseignement->ecue->semestre->cycle->id;
         $sem = $enseignement->ecue->semestre->id;
-
+        
         // $contrats = $this->contratRepository->findWhere(['specialite_id' => $specialite, 'cycle_id' => $cycle, 'academic_year_id' => $this->anneeAcademic->id]);
         
         $c = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
@@ -373,10 +373,11 @@ class NoteController extends Controller
             ->where('specialite_id', $specialite)
             ->where('cycle_id', $cycle)
             ->where('ville_id', $ville_id)
+            ->where('inscription_status', '<>', 'RAS')
+            ->where('inscription_status', '<>', 'Abandon')
             ->where('contrats.academic_year_id', $enseignement->academic_year_id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
-
         
         //Si on est en deuxieme session? on recupere les etudiant qui sont alles en 2e session
         $contrats = ($type != 'session2') ? $c->get() : $c->whereHas('semestre_infos', function($q) use ($sem, $ville_id){
@@ -565,7 +566,7 @@ class NoteController extends Controller
             ->where('specialite_id', $spec)
             ->where('cycle_id', $cycle->id)
             ->where('contrats.academic_year_id', $aa->id)
-            //->where('inscription_status', '<>', 'RAS')
+            ->where('inscription_status', '<>', 'RAS')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
 
@@ -582,12 +583,15 @@ class NoteController extends Controller
         return view('notes.a_deliberer', compact('contrats', 'sem', 'session', 'spec'));
     }
 
-    public function pv($sem, $spec, $session, Request $request){
+    public function pv($sem, $spec, $session, Request $request) {
+
         $id = $request->input('contrat_id');
+
         if (empty($id)) {
             Flash::error('Selectionnez au moins un étudiant');
             return redirect()->back();
         }
+        
         $cycle = $this->semestreRepository->findWithoutFail($sem)->cycle;
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
@@ -662,9 +666,10 @@ class NoteController extends Controller
      *
      *
      */
-    protected function saveNotes($contrat, $enseignements, $session, $semestre){
+    protected function saveNotes($contrat, $enseignements, $session, $semestre) {
+
         $semestreInfo = $this->semestreInfoRepository->firstOrNew([
-            'semestre_id'=>$semestre,
+            'semestre_id'=> $semestre,
             'contrat_id' => $contrat->id
         ]);
         // dd($session);
@@ -784,7 +789,8 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deliberation($sem, $spec, Request $request){
+    public function deliberation($sem, $spec, Request $request) {
+
         $specialite = $this->specialiteRepository->findWithoutFail($spec);
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
@@ -792,7 +798,8 @@ class NoteController extends Controller
             'specialite_id' => $specialite->id,
             'cycle_id' => $semestre->cycle->id,
             'academic_year_id' => $aa->id,
-            //['inscription_status', '<>', 'RAS']
+            ['inscription_status', '<>', 'RAS'],
+            ['inscription_status', '<>', 'Abandon']
         ]);
 
         return view('notes.deliberation', compact('specialite', 'semestre', 'contrats'));
@@ -835,7 +842,8 @@ class NoteController extends Controller
         return view('notes.noteDeliberation', compact('contrat', 'enseignements', 'type', 'sem'));
     }
 
-    public function saveDeliberation($sem, $type, $contrat, Request $request){
+    public function saveDeliberation($sem, $type, $contrat, Request $request) {
+
         $input = $request->except('_token');
         $contrat = $this->contratRepository->findWithoutFail($contrat);
         $semestre = $this->semestreRepository->findWithoutFail($sem);
@@ -1302,6 +1310,7 @@ class NoteController extends Controller
             ->where('ville_id', $ville_id)
             ->where('contrats.academic_year_id', $aa->id)
             ->where('inscription_status', '<>', 'RAS')
+            ->where('inscription_status', '<>', 'Abandon')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
             ->get():
@@ -1312,6 +1321,7 @@ class NoteController extends Controller
             ->where('cycle_id', $cycle->id)
             ->where('contrats.academic_year_id', $aa->id)
             ->where('inscription_status', '<>', 'RAS')
+            ->where('inscription_status', '<>', 'Abandon')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
             ->get();
@@ -1429,5 +1439,66 @@ class NoteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getDataForLockNotes() {
+
+        $academicYears = $this->academicYearRepository->all();
+
+        $academic = [];
+
+        foreach ($academicYears as $a) {
+            $academic[$a->id] = $a->debut.'/'.$a->fin;
+        }
+
+        return view('notes.lock', compact('academic')); 
+      
+    }
+
+    public function lock_notes($session, $academicYear) {
+       
+        DB::beginTransaction();
+
+        $academic = $this->academicYearRepository->find($academicYear);
+
+        try {
+
+            $academic->policies->map(function ($contrat) use ($session) {
+                
+                $policy = $this->contratRepository->find($contrat['id']);
+                
+                if($policy) {
+                
+                    $policy->notes->map(function ($note) use ($session) {
+                        
+                        $nt = $this->noteRepository->find($note['id']);
+
+                        $session === 'session1' ? 
+                            $nt->update(['state_session1' => !$note['state_session1']]) 
+                                : 
+                            $nt->update(['state_session2' => !$note['state_session2']])
+                        ;
+
+                    });
+
+                }
+
+            });
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+        }
+
+        return [
+            "success" => true,
+            "message" => "Opération faite avec succès"
+        ];
+        
     }
 }

@@ -208,9 +208,14 @@ class ContratEnseignantController extends Controller
     {
         $input = $request->except('_token');
         $input['academic_year_id'] = $this->academicYear;
-        $last_range = $this->contratEnseignantRepository->findWhere(['academic_year_id' => $this->academicYear])->last()->rang;
         
-        $input['rang'] = $last_range + 1;
+        //$last_range = $this->contratEnseignantRepository->findWhere(['academic_year_id' => $this->academicYear])->last()->rang;
+        
+        //$input['rang'] = $last_range + 1;
+
+        $last_range = $this->contratEnseignantRepository->findWhere(['academic_year_id' => $this->academicYear]);
+       
+        $input['rang'] = count($last_range) > 0 ? $last_range->last()->rang + 1 : 1;
 
         $contrat = $this->contratEnseignantRepository->create($input);
 

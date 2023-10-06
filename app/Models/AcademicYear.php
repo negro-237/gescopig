@@ -10,12 +10,16 @@ class AcademicYear extends Model
         'debut', 'fin', 'actif'
     ];
 
-    public function apprenants(){
+    public function apprenants() {
         return $this->hasMany(Apprenant::class);
     }
 
-    public function contrats(){
+    public function contrats() {
         return $this->hasMany(Apprenant::class);
+    }
+
+    public function policies() {
+        return $this->hasMany(Contrat::class);
     }
 
     public function enseignements(){

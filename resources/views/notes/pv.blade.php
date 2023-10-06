@@ -110,6 +110,7 @@
                 <h1 class="text-center">Spécialité : {{ $contrats->first()->specialite->slug. " (" .$contrats->first()->specialite->title. ")" }}</h1>
                 <h1 class="text-center">Niveau : {{$semestre->cycle->label. ' ' .$semestre->cycle->niveau}}</h1>
                 <h1 class="text-center">Année Académique : {{ $academicYear->debut. '-' .$academicYear->fin }}</h1>
+                <!-- <h1 class="text-center">Année Académique : 2022-2023</h1> --> 
             </div>
             <div class="col-xs-3" id="ref">
                 <div class="pull-right">
@@ -185,8 +186,10 @@
                         <td>{{ ++$i }}</td>
                         @if($contrat->ville_id == 1)
                             <td>{{ $academicYear->fin. '-' .$contrat->id. '-D' }}</td>
-                        @else
+                        @elseif($contrat->ville_id == 2)
                             <td>{{ $academicYear->fin. '-' .$contrat->id. '-Y' }}</td>
+                        @else 
+                            <td>{{ $academicYear->fin. '-' .$contrat->id. '-M' }}</td>
                         @endif
                         
                         <td class="text-left">{{ $contrat->apprenant->nom. ' ' .$contrat->apprenant->prenom }}</td>

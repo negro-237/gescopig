@@ -53,7 +53,7 @@
                     
                     <div class="form-group col-md-4">
                         {!! Form::label('ville_id', 'Ville :') !!}
-                        {!! Form::select('ville_id', [1=>'Douala', 2 => 'Yaounde'], $contrat->ville_id, ['class' => 'form-control']) !!}
+                        {!! Form::select('ville_id', $cities, $contrat->ville_id, ['class' => 'form-control']) !!}
                     </div>
                     @can('change inscription')
                     <div class="form-group col-md-4">
@@ -62,14 +62,15 @@
                             'RAS'=>'RAS',
                             'Inscrit'=>'Inscrit',
                             'Inscrit avec moratoire' => 'Inscrit avec moratoire', 
-                            'Apprenant en règle' => 'Apprenant en règle'
+                            'Apprenant en règle' => 'Apprenant en règle',
+                            'Abandon' => 'Abandon'
                             ), $contrat->inscription_status, ['class' => 'form-control']
                         )!!}
                     </div>
                     @endcan 
                 </div>
             </div>
-            <div class="panel panel-default ">
+            <div class="panel panel-default">
                 <div class="panel-heading">Liste des Apprenants</div>
                 <div class="panel-body">
                     <ul class="form-group list-group">

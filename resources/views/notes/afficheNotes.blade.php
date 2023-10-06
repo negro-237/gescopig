@@ -30,9 +30,9 @@
                                 <td>{{ $enseignement->ecue->title }}</td>
                                 <td>
                                     <div class="pull-right">
-                                        <a href="{{ route('notes.showDouala', ['cc',$enseignement->id,$ville->id]) }}" class="btn btn-primary btn-sm">CC</a>
-                                        <a href="{{ route('notes.showDouala', ['session1',$enseignement->id,$ville->id]) }}" class="btn btn-info btn-sm">1ere Session</a>
-                                        <a href="{{ route('notes.showDouala', ['session2',$enseignement->id,$ville->id]) }}" class="btn btn-warning btn-sm">2e Session</a>
+                                        <a href="{{ route('notes.show-notes', ['cc',$enseignement->id,$ville->id]) }}" class="btn btn-primary btn-sm">CC</a>
+                                        <a href="{{ route('notes.show-notes', ['session1',$enseignement->id,$ville->id]) }}" class="btn btn-info btn-sm">1ere Session</a>
+                                        <a href="{{ route('notes.show-notes', ['session2',$enseignement->id,$ville->id]) }}" class="btn btn-warning btn-sm">2e Session</a>
                                     </div>
                                 </td>
                             </tr>

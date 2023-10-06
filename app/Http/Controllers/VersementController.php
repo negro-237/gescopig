@@ -64,7 +64,7 @@ class VersementController extends Controller
         return redirect()->back();
     }
 
-    public function details($id){
+    public function details($id) {
         $apprenant = $this->apprenantRepository->findWithoutFail($id);
         $academicYear = $this->anneeAcademic;
         $reinscription = false;

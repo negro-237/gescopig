@@ -19,7 +19,9 @@ class Note extends Model
         'cc',
         'session2',
         'del1',
-        'del2'
+        'del2',
+        'state_session1',
+        'state_session2',
     ];
 
     public function enseignement(){

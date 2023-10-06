@@ -73,7 +73,7 @@ class Contrat extends Model
         return $this->morphOne(Ingoing::class, 'ingoing');
     }
 
-    public function notes(){
+    public function notes() {
         return $this->hasMany(Note::class);
     }
 
