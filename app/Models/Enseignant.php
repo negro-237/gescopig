@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use \Venturecraft\Revisionable\RevisionableTrait;
 
 /**
  * Class Enseignant
@@ -19,7 +18,6 @@ use \Venturecraft\Revisionable\RevisionableTrait;
 class Enseignant extends Model
 {
     use SoftDeletes;
-    use RevisionableTrait;
 
     protected $revisionCreationsEnabled = true;
     protected $revisionForceDeleteEnabled = true;

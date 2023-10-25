@@ -89,7 +89,6 @@ class NoteController extends Controller
 
         $specialites = $this->specialiteRepository->all();
         $cycles = $this->cycleRepository->all();
-
         $academicYears = [];
         $ay = $this->academicYearRepository->all();
         foreach ($ay as $a){
@@ -373,8 +372,8 @@ class NoteController extends Controller
             ->where('specialite_id', $specialite)
             ->where('cycle_id', $cycle)
             ->where('ville_id', $ville_id)
-            ->where('inscription_status', '<>', 'RAS')
-            ->where('inscription_status', '<>', 'Abandon')
+           // ->where('inscription_status', '<>', 'RAS')
+           // ->where('inscription_status', '<>', 'Abandon')
             ->where('contrats.academic_year_id', $enseignement->academic_year_id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
@@ -566,7 +565,7 @@ class NoteController extends Controller
             ->where('specialite_id', $spec)
             ->where('cycle_id', $cycle->id)
             ->where('contrats.academic_year_id', $aa->id)
-            ->where('inscription_status', '<>', 'RAS')
+            //->where('inscription_status', '<>', 'RAS')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
 
@@ -798,8 +797,7 @@ class NoteController extends Controller
             'specialite_id' => $specialite->id,
             'cycle_id' => $semestre->cycle->id,
             'academic_year_id' => $aa->id,
-            ['inscription_status', '<>', 'RAS'],
-            ['inscription_status', '<>', 'Abandon']
+         
         ]);
 
         return view('notes.deliberation', compact('specialite', 'semestre', 'contrats'));
@@ -1161,10 +1159,16 @@ class NoteController extends Controller
         return response()->json($note);
     }
 
-    public function imprime($sem, $specialite, Request $request){
+    public function imprime($sem, $specialite, Request $request) {
+
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
-        $contrats = $this->contratRepository->findWhere(['specialite_id' => $specialite, 'cycle_id' => $semestre->cycle_id, 'academic_year_id' => $aa->id]);
+        
+        $contrats = $this->contratRepository->findWhere([
+            'specialite_id' => $specialite, 
+            'cycle_id' => $semestre->cycle_id, 
+            'academic_year_id' => $aa->id,
+        ]);
 
         return view('notes.imprime', compact('contrats', 'semestre'));
     }
@@ -1443,6 +1447,8 @@ class NoteController extends Controller
 
     public function getDataForLockNotes() {
 
+        $this->middleware(['role:Admin']);
+        
         $academicYears = $this->academicYearRepository->all();
 
         $academic = [];
@@ -1457,6 +1463,8 @@ class NoteController extends Controller
 
     public function lock_notes($session, $academicYear) {
        
+        $this->middleware(['role:Admin']);
+        
         DB::beginTransaction();
 
         $academic = $this->academicYearRepository->find($academicYear);

@@ -163,7 +163,8 @@ class EnseignementController extends AppBaseController
         return view('search',compact('cycles','model', 'method'));
     }
 
-    public function affiche($sem, $spe, Request $request){
+    public function affiche($sem, $spe, Request $request) {
+        
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $specialite = $this->specialiteRepository->findWithoutFail($spe);
         $ecues = $specialite->ecues->where('semestre_id', $semestre->id)->where('academic_year_id', $this->anneeAcademic);

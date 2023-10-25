@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Etat des absences à Douala
+            Etat des absences à {{ strtoupper($city->nom) }}
         </h1>
     </section>
     <div class="content">

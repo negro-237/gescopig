@@ -31,7 +31,7 @@
                     	<div class="col-lg-12">
                     		<div class="row"  >
                                 <div class="col-lg-12">
-                                    <h3 style="text-align: center; text-decoration: underline;">FICHE DE SUIVI DES APPRENANTS PAR ECUE DOUALA</h3>
+                                    <h3 style="text-align: center; text-decoration: underline;">FICHE DE SUIVI DES APPRENANTS PAR ECUE {{ strtoupper($city->nom) }}</h3>
                                 </div>
                             </div>
                             <div class="row">

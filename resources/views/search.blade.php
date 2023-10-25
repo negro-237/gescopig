@@ -43,15 +43,26 @@
                         </a>
                     @else
                         @foreach($cycle->semestres as $semestre)
-                            <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($type) ? $type : '', isset($ville_id) ? $ville_id : '']) !!}" class="small-box-footer ">
-                                <font style="vertical-align: inherit;">
-                                    <font style="vertical-align: inherit;">
-                                        {!! $semestre->title !!}
-                                    </font>
-                                </font>
-                                <i class="fa fa-arrow-circle-right"></i>
-                            </a>
 
+                            @if($model == 'absences')
+                                <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($ville_id) ? $ville_id : '', isset($type) ? $type : '']) !!}" class="small-box-footer ">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            {!! $semestre->title !!}
+                                        </font>
+                                    </font>
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            @else
+                                <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($type) ? $type : '']) !!}" class="small-box-footer ">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">
+                                            {!! $semestre->title !!}
+                                        </font>
+                                    </font>
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            @endif
                         @endforeach
                     @endif
                 </div>

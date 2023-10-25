@@ -104,11 +104,12 @@
                                     <small style="font-size: 18px; font-weight: bold;">
                                         Ville:
                                     </small>
-                                    @if($enseignement->ville_id === 1)
+                                    <small style="font-size:18px; font-weight: bold; text-transform: uppercase;">{{ strtoupper($enseignement->ville->nom) }}</small>
+                                   <!--  @if($enseignement->ville_id === 1)
                                     <small style="font-size:18px; font-weight: bold; text-transform: uppercase;">Douala</small>
                                     @else
                                         <small style="font-size:18px; font-weight: bold; text-transform: uppercase;">Yaoundé</small>
-                                    @endif
+                                    @endif -->
                                 </div>
                             </div>
                         </div>

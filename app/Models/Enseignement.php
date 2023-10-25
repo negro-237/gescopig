@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Events\EnseignementUpdate;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use \Venturecraft\Revisionable\RevisionableTrait;
+//use \Venturecraft\Revisionable\RevisionableTrait;
 
 /**
  * Class Enseignement
@@ -29,7 +29,7 @@ use \Venturecraft\Revisionable\RevisionableTrait;
 class Enseignement extends Model
 {
     use SoftDeletes;
-    use RevisionableTrait;
+    //use RevisionableTrait;
 
     protected $revisionCreationsEnabled = true;
     protected $revisionForceDeleteEnabled = true;
@@ -157,7 +157,7 @@ class Enseignement extends Model
         return $this->belongsTo(TroncCommun::class);
     }
 
-    public function ville(){
+    public function ville() {
         return $this->belongsTo(Ville::class);
     }
 }

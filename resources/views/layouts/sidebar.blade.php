@@ -209,16 +209,19 @@
                     <!-- Ancien
                     <li><a href="{!! url('absences/search/1') !!}">Enregistrer Absences</a></li>
                     -->
-                    <li><a href="{!! url('absences/search/1') !!}">Enregistrer Absences Douala</a></li>
-                    <li><a href="{!! url('absences/search/2') !!}">Enregistrer Absences Yaoundé</a></li>
+                    <li><a href="{!! url('absences/search/1/1') !!}">Enregistrer Absences Douala</a></li>
+                    <li><a href="{!! url('absences/search/1/2') !!}">Enregistrer Absences Yaoundé</a></li>
+                    <li><a href="{!! url('absences/search/1/3') !!}">Enregistrer Absences Maroua</a></li>
                     @endcan
                     <!-- Ancien
                     <li><a href="{!! url('absences/search/2') !!}">Etat des Absences</a></li>
                     -->
-                    <li><a href="{!! url('absences/search/3') !!}">Etat des Absences Douala</a></li>
-                    <li><a href="{!! url('absences/search/4') !!}">Etat des Absences Yaounde</a></li>
-                    <li><a href="{!! url('absences/search/5') !!}">Présences par Ecue Dla</a></li>
-                    <li><a href="{!! url('absences/search/6') !!}">Présences par Ecue YDE</a></li>
+                    <li><a href="{!! url('absences/search/3/1') !!}">Etat des Absences Douala</a></li>
+                    <li><a href="{!! url('absences/search/3/2') !!}">Etat des Absences Yaounde</a></li>
+                    <li><a href="{!! url('absences/search/3/3') !!}">Etat des Absences Maroua</a></li>
+                    <li><a href="{!! url('absences/search/5/1') !!}">Présences par Ecue Dla</a></li>
+                    <li><a href="{!! url('absences/search/5/2') !!}">Présences par Ecue YDE</a></li>
+                    <li><a href="{!! url('absences/search/5/3') !!}">Présences par Ecue MRA</a></li>
                 </ul>
             </li>
             @endcan

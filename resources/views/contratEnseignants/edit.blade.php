@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group col-xs-4">
                         {!! Form::label('ville_id', 'Ville :') !!}
-                        {!! Form::select('ville_id', [1=>'Douala', 2 => 'Yaounde'], $contrat->ville->nom, ['class' => 'form-control']) !!}
+                        {!! Form::select('ville_id', $cities, $contrat->ville->nom, ['class' => 'form-control']) !!}
                     </div>
                 </div>
             </div>

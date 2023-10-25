@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +17,6 @@ Route::prefix('admin')->namespace('Back')->group(function () {
     Route::name('admin')->get('/', 'AdminController@index');
 });
 Route::get('/test', function() {
-    return $data = \App\Models\Contrat::find(408)->notes;
 });
 Route::prefix('')->middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -27,24 +25,24 @@ Route::prefix('')->middleware('auth')->group(function () {
 
     Route::get('absences/updateJustif/{justification}/{absence}', ['middleware' => 'permission:edit absences', 'uses' => 'AbsenceController@updateJustif'])->name('absences.updateJustif');
 
-    Route::get('absences/search/{n}', ['middleware' => 'permission:create absences|read absences|read enseignements', 'uses' => 'AbsenceController@search'])->name('absences.search');
+    Route::get('absences/search/{n}/{ville_id}', ['middleware' => 'permission:create absences|read absences|read enseignements', 'uses' => 'AbsenceController@search'])->name('absences.search');
     Route::get('absences/etat', 'AbsenceController@etat')->name('absences.etat');
 
     Route::get('absences/affiche/{semestre}/{specialite}', ['middleware' => 'permission:read absences', 'uses' => 'AbsenceController@affiche'])->name('absences.affiche');
 
-    Route::get('absences/afficheDouala/{semestre}/{specialite}', ['middleware' => 'permission:read absences', 'uses' => 'AbsenceController@afficheDouala'])->name('absences.afficheDouala');
+    Route::get('absences/affiche-absence/{semestre}/{specialite}/{ville_id}', ['middleware' => 'permission:read absences', 'uses' => 'AbsenceController@afficheAbsence'])->name('absences.afficheAbsence');
 
     Route::get('absences/afficheYaounde/{semestre}/{specialite}', ['middleware' => 'permission:read absences', 'uses' => 'AbsenceController@afficheYaounde'])->name('absences.afficheYaounde');
 
     Route::get('absences/create/{semestre}/{specialite}', ['middleware' => 'permission:create absences', 'uses' => 'AbsenceController@create'])->name('absences.create');
 
-    Route::get('absences/createDouala/{semestre}/{specialite}', ['middleware' => 'permission:create absences', 'uses' => 'AbsenceController@createDouala'])->name('absences.createDouala');
+    Route::get('absences/create-absence/{semestre}/{specialite}/{ville_id}', ['middleware' => 'permission:create absences', 'uses' => 'AbsenceController@createAbsence'])->name('absences.createAbsence');
 
     Route::get('absences/createYaounde/{semestre}/{specialite}', ['middleware' => 'permission:create absences', 'uses' => 'AbsenceController@createYaounde'])->name('absences.createYaounde');
 
-    Route::get('absences/ficheDouala/{semestre}/{specialite}', 'AbsenceController@ficheDouala')->name('absences.ficheDouala');
+    Route::get('absences/fiche/{semestre}/{specialite}/{ville_id}', 'AbsenceController@ficheAbsence')->name('absences.ficheAbsence');
 
-    Route::get('absences/ficheDouala/{semestre}/{specialite}/{id}', 'AbsenceController@ficheEcueDouala')->name('absences.fiche-ecue-douala');
+    Route::get('absences/fiche-presence/{semestre}/{specialite}/{id}/{ville_id}', 'AbsenceController@ficheEcue')->name('absences.fiche-ecue');
 
     Route::get('absences/ficheYaounde/{semestre}/{specialite}', 'AbsenceController@ficheYaounde')->name('absences.ficheYaounde');
 

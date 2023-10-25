@@ -16,4 +16,8 @@ class ContratEnseignantRepository extends BaseRepository
         return ContratEnseignant::class;
     }
 
+    public function update($attributes, $values) {
+        return ContratEnseignant::updateOrCreate($attributes, $values);
+    }
+
 }

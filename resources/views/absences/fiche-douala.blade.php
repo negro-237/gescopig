@@ -2,7 +2,7 @@
 
 @section('content')
 	<section class="content-header">
-        <h1 class="pull-left">Liste des Ecues Douala</h1>
+        <h1 class="pull-left">Liste des Ecues {{ strtoupper($city->nom) }}</h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -25,7 +25,7 @@
     							<td class="text-center">{{$no++}}</td>
     							<td>{{$en->ecue->title}}</td>
 								<td>
-									<a href="{!! route('absences.fiche-ecue-douala', [$semestre, $specialite, $en->id]) !!}" class='btn btn-default btn-xs'>Fiche des présences Douala</a>
+									<a href="{!! route('absences.fiche-ecue', [$semestre, $specialite, $en->id, $city->id]) !!}" class='btn btn-default btn-xs'>Fiche des présences {{ strtoupper($city->nom) }}</a>
 								</td>
 								
 							</tr>

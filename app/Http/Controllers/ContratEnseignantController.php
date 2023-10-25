@@ -192,7 +192,7 @@ class ContratEnseignantController extends Controller
             ->orderBy('id', 'desc')
             ->findWhereNotIn('id', $ens);
 
-        $villes = Ville::all();
+        $villes = $this->villeRepository->all();
 
         return view('contratEnseignants.create', compact('enseignants', 'villes'));
     }
@@ -243,12 +243,20 @@ class ContratEnseignantController extends Controller
     public function edit($id)
     {
         $contrat = $this->contratEnseignantRepository->findWithoutFail($id);
+        $villes = $this->villeRepository->all();
+        $cities = [];
+
+        foreach ($villes as $ville){
+            $cities[$ville->id] = $ville->nom;
+        }
+
         if (empty($contrat)) {
             Flash::error('Contrat inexistant');
 
             return redirect(route('contratEnseignants.index'));
         }
-        return view('contratEnseignants.edit', compact('contrat'));
+
+        return view('contratEnseignants.edit', compact('contrat', 'cities'));
     }
 
     /**

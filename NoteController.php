@@ -254,7 +254,8 @@ class NoteController extends Controller
      * cette fonction sert à l'enregistrement des notes de l'etudiant
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function affiche($sem, $spe, Request $request){
+    public function affiche($sem, $spe, Request $request) {
+        
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $specialite = $this->specialiteRepository->findWithoutFail($spe);
         $ecues = $specialite->ecues->where('semestre_id', $semestre->id);

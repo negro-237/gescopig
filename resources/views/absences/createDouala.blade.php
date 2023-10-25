@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Absences Douala
+            Absences {{ strtoupper($city->nom) }}
         </h1>
     </section>
     <div class="content">
@@ -29,6 +29,7 @@
                         <thead>
                             <tr>
                                 <div class="form-group col-sm-6">
+                                    {!! Form::hidden('ville_id',  $city->id) !!}
                                     {!! Form::label('date', 'Date:') !!}
                                     {!! Form::date('date', null, ['class' => 'form-control']) !!}
                                 </div>
@@ -60,7 +61,7 @@
             <div class="box-footer">
                 <h4 class="pull-right" style="padding: 0px">
                     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                    <a href="{!! route('absences.search', ['1']) !!}" class="btn btn-default">Cancel</a>
+                    <a href="{!! route('absences.search', ['1', $city->id]) !!}" class="btn btn-default">Cancel</a>
                 </h4>
             </div>
             {!! Form::close() !!}

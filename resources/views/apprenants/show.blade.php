@@ -218,7 +218,7 @@
                                         <div class="col-md-4 col-sm-4 col-xs-4">
                                             <small style="border:1px solid black; padding: 5px; background-color: black; color: white; font-weight: bold; font-size: 16px; font-family: Times New Roman;">Cycle demandé</small>
                                             <p style="margin-top: 25px;">
-                                                @if($a->contrats->first()->cycle_id == 1 || $a->contrats->first()->cycle_id == 2 || $a->contrats->first()->cycle_id == 3)
+                                                @if($a->contrats->first()->cycle_id == 1 || $a->contrats->first()->cycle_id == 2 || $a->contrats->first()->cycle_id == 3 || $a->contrats->first()->cycle_id == 10 || $a->contrats->first()->cycle_id == 11 || $a->contrats->first()->cycle_id == 12)
                                                     Licence 
                                                 @else
                                                     Master
