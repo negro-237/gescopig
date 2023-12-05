@@ -5,12 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-use \Venturecraft\Revisionable\RevisionableTrait;
+//use \Venturecraft\Revisionable\RevisionableTrait;
 
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
-    use RevisionableTrait;
+    //use RevisionableTrait;
 
     protected $revisionCreationsEnabled = true;
     protected $revisionForceDeleteEnabled = true;

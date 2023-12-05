@@ -241,9 +241,11 @@
                     <!--
                     <li><a href="{!! url('enseignements/search/2') !!}"><i class="fa fa-circle-o"> Evolution des enseignements</i></a></li>
                     -->
-                    <li><a href="{!! url('enseignements/search/2') !!}"> Evolution enseignements DLA</a></li>
+                    <li><a href="{!! url('enseignements/search/2/1') !!}"> Evolution enseignements DLA</a></li>
 
-                    <li><a href="{!! url('enseignements/search/3') !!}"> Evolution enseignements YDE</a></li>
+                    <li><a href="{!! url('enseignements/search/2/2') !!}"> Evolution enseignements YDE</a></li>
+
+                    <li><a href="{!! url('enseignements/search/2/3') !!}"> Evolution enseignements MRA</a></li>
 
                     <li><a href="{!! url('enseignements') !!}"> Liste de tous les enseignements</a></li>
 

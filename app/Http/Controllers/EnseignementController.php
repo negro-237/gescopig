@@ -17,6 +17,7 @@ use App\Repositories\EnseignementRepository;
 use App\Repositories\SemestreRepository;
 use App\Repositories\SpecialiteRepository;
 use App\Repositories\UeRepository;
+use App\Repositories\VilleRepository;
 use Carbon\Carbon;
 use Flash;
 use App\Http\Controllers\AppBaseController;
@@ -40,11 +41,13 @@ class EnseignementController extends AppBaseController
     protected $anneeAcademic;
     protected $ueRepository;
     protected $contratEnseignantRepository;
+    protected $villeRepository;
 
     public function __construct(EnseignementRepository $enseignementRepo, AcademicYear $academicYear, ContratEnseignantRepository $contratEnseignantRepository,
                                 EcueRepository $ecueRepository, EnseignantRepository $enseignantRepository,
                                 SemestreRepository $semestreRepository, SpecialiteRepository $specialiteRepository,
-                                CycleRepository $cycleRepository,UeRepository $ueRepository, Request $request)
+                                CycleRepository $cycleRepository,UeRepository $ueRepository, 
+                                VilleRepository $villeRepository, Request $request)
     {
         if(request()->server("SCRIPT_NAME") !== 'artisan') {
             if ($request->route()->getName() == 'enseignements.create')
@@ -72,6 +75,7 @@ class EnseignementController extends AppBaseController
         $this->ueRepository = $ueRepository;
         $this->anneeAcademic = $academicYear->getCurrentAcademicYear();
         $this->contratEnseignantRepository = $contratEnseignantRepository;
+        $this->villeRepository = $villeRepository;
     }
 
     /**
@@ -145,7 +149,8 @@ class EnseignementController extends AppBaseController
 
 
 
-    public function search($n){
+    public function search($n, $ville_id = null) {
+
         $specialites = $this->specialiteRepository->all();
         $cycles = $this->cycleRepository->all();
         if($n == '1')
@@ -156,11 +161,11 @@ class EnseignementController extends AppBaseController
         */
         elseif($n == '2')
             $method = 'afficheDouala';
-        elseif($n == '3')
-            $method = 'afficheYaounde';
+       /*  elseif($n == '3')
+            $method = 'afficheYaoundeuuu'; */
         $model = 'enseignements';
 
-        return view('search',compact('cycles','model', 'method'));
+        return view('search',compact('cycles','model', 'method', 'ville_id'));
     }
 
     public function affiche($sem, $spe, Request $request) {
@@ -181,20 +186,24 @@ class EnseignementController extends AppBaseController
 
     }
 
-    public function afficheDouala($sem, $spe, Request $request){
+    public function afficheEvolution($sem, $spe, $ville_id, Request $request) {
+
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $specialite = $this->specialiteRepository->findWithoutFail($spe);
         $ecues = $specialite->ecues->where('semestre_id', $semestre->id)->where('academic_year_id', $this->anneeAcademic);
 
+        $ville = $this->villeRepository->findWithoutFail($ville_id);
+
         $ens = [];
         foreach($ecues as $ec){
-            $enseignement = $ec->enseignements->where('specialite_id', $specialite->id)->where('ville_id', 1)->first();
+            $enseignement = $ec->enseignements->where('specialite_id', $specialite->id)->where('ville_id', $ville_id)->first();
             isset($enseignement->id) ? array_push($ens, $enseignement->id) : '';
         }
+
         $enseignements = $this->enseignementRepository->findWhereIn('id', $ens);
         $request->session()->forget('url');
 
-        return view('enseignements.afficheDouala', compact('enseignements', 'specialite', 'semestre'));
+        return view('enseignements.afficheDouala', compact('enseignements', 'specialite', 'semestre', 'ville'));
 
     }
 

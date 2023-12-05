@@ -17,6 +17,21 @@ Route::prefix('admin')->namespace('Back')->group(function () {
     Route::name('admin')->get('/', 'AdminController@index');
 });
 Route::get('/test', function() {
+    $users = App\User::with('roles')->get();
+    $data = [];
+    foreach($users as $user) {
+        foreach($user->roles as $role) {
+            $item = [
+                'nom' => $user->name,
+                'role' => $role->name,
+                'permission' => $role->permissions->pluck('name'),
+            ];
+            array_push($data, $item);
+            
+        }
+       
+    }
+    return $data;
 });
 Route::prefix('')->middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -85,10 +100,10 @@ Route::prefix('')->middleware('auth')->group(function () {
 
     Route::resource('enseignements', 'EnseignementController')->except('create');
     Route::get('enseignements/affiche/{semestre}/{specialite}', 'EnseignementController@affiche')->name('enseignements.affiche');
-    Route::get('enseignements/afficheDouala/{semestre}/{specialite}', 'EnseignementController@afficheDouala')->name('enseignements.afficheDouala');
+    Route::get('enseignements/affiche-evolution/{semestre}/{specialite}/{ville_id}', 'EnseignementController@afficheEvolution')->name('enseignements.afficheDouala');
     Route::get('enseignements/afficheYaounde/{semestre}/{specialite}', 'EnseignementController@afficheYaounde')->name('enseignements.afficheYaounde');
 
-    Route::get('enseignements/search/{n}', 'EnseignementController@search')->name('enseignements.search');
+    Route::get('enseignements/search/{n}/{ville_id?}', 'EnseignementController@search')->name('enseignements.search');
     Route::patch('enseignements/{specialites}/updateMh', 'EnseignementController@updateMh')->name('enseignements.updateMh');
     Route::get('enseignements/{specialite}/editMh', 'EnseignementController@editMh')->name('enseignements.editMh');
     Route::get('enseignements/create/{semestre}/{specialite}', 'EnseignementController@create')->name('enseignements.create');
@@ -113,7 +128,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('catUes', 'CatUeController')->except('show');
     Route::resource('ues', 'UeController')->except('show');
 
-    Route::get('notes/locked/{session}/{academic_year}', 'NoteController@lock_notes');
+    Route::get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes');
     Route::get('notes/lock', 'NoteController@getDataForLockNotes');
     Route::get('notes/search/{n}/{type?}/{ville_id?}', 'NoteController@search')->name('notes.search');
     // Routes pour l'enregistrement des notes

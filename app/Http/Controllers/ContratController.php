@@ -319,13 +319,13 @@ class ContratController extends Controller
 
         $policy = $this->contratRepository->update($request->all(),$contrat->id);
         
-        if($contrat->inscription_status == "RAS" && $policy->inscription_status != "RAS") {
+       /*  if($contrat->inscription_status == "RAS" && $policy->inscription_status != "RAS") {
 
             $full_name = $contrat->apprenant->prenom . ' ' . $contrat->apprenant->nom;
                         
-            if(strtolower($contrat->ville->nom) == "douala") User::find(18)->notify(new SendMailStudentNotification($full_name, $contrat->id));
-            else User::find(18)->notify(new SendMailStudentNotification($full_name, $contrat->id));
-        }
+            if(strtolower($contrat->ville->nom) == "douala") User::find(40)->notify(new SendMailStudentNotification($full_name, $contrat->id));
+            else User::find(40)->notify(new SendMailStudentNotification($full_name, $contrat->id));
+        } */
 
         return redirect(route('contrats.index'));
     }

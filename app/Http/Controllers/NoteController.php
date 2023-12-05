@@ -178,13 +178,23 @@ class NoteController extends Controller
         
         $ville = $this->villeRepository->findWithoutFail($ville_id);
         $specialites = $this->specialiteRepository->findWithoutFail($specialite);
-        $cycle = $this->semestreRepository->find($semestre)->cycle;
+        //$cycle = $this->semestreRepository->find($semestre)->cycle;
         /*
         $contrats = $this->contratRepository->findWhere(['academic_year_id' => $this->anneeAcademic->id,'cycle_id'=> $cycle->id, 'specialite_id' => $specialites->id]);
         */
 
+        if($ville_id == 3) {
+            if($semestre == 1 || $semestre == 2) $cycle = 10;
+            else if($semestre == 3 || $semestre == 4) $cycle = 11;
+            else if($semestre == 5 || $semestre == 6) $cycle = 12;
+            else if($semestre == 7 || $semestre == 8) $cycle = 13;
+            else $cycle = 14;
+        } else {
+            $cycle = $this->semestreRepository->find($semestre)->cycle->id;
+        }
+
         $filter1 = $this->anneeAcademic->id;
-        $filter2 = $cycle->id;
+        $filter2 = $cycle;
         $filter3 = $specialites->id;
 
         $apprenants = Apprenant::with(['contrats' => function($query) use ($filter1, $filter2, $filter3, $ville_id){
@@ -797,7 +807,8 @@ class NoteController extends Controller
             'specialite_id' => $specialite->id,
             'cycle_id' => $semestre->cycle->id,
             'academic_year_id' => $aa->id,
-         
+           /*  ['inscription_status', '<>', 'RAS'],
+            ['inscription_status', '<>', 'Abandon'] */
         ]);
 
         return view('notes.deliberation', compact('specialite', 'semestre', 'contrats'));
@@ -1461,17 +1472,22 @@ class NoteController extends Controller
       
     }
 
-    public function lock_notes($session, $academicYear) {
+    public function lock_notes($session, $academicYear, $level) {
        
         $this->middleware(['role:Admin']);
-        
-        DB::beginTransaction();
 
         $academic = $this->academicYearRepository->find($academicYear);
-
+        if($level == '1') $policies = $academic->policies()->whereIn('cycle_id', [1, 10]);
+        else if($level == '2') $policies = $academic->policies()->whereIn('cycle_id', [2, 11]);
+        else if($level == '3') $policies = $academic->policies()->whereIn('cycle_id', [3, 12]);
+        else if($level == '4') $policies = $academic->policies()->whereIn('cycle_id', [4, 13]);
+        else $policies = $academic->policies()->whereIn('cycle_id', [5, 14]);
+        
+        DB::beginTransaction();
+       
         try {
 
-            $academic->policies->map(function ($contrat) use ($session) {
+            $policies->get()->map(function ($contrat) use ($session) {
                 
                 $policy = $this->contratRepository->find($contrat['id']);
                 

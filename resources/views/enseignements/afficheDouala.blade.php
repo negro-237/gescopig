@@ -3,7 +3,7 @@
 
     <div class="content">
         <h1>
-        {!! isset($enseignements->first()->id) ? $enseignements->first()->specialite->slug. ' ' .$enseignements->first()->ecue->semestre->cycle->niveau .' - '. $enseignements->first()->ecue->semestre->title : $specialite->slug. ' ' .$semestre->cycle->niveau !!} - Douala
+        {!! isset($enseignements->first()->id) ? $enseignements->first()->specialite->slug. ' ' .$enseignements->first()->ecue->semestre->cycle->niveau .' - '. $enseignements->first()->ecue->semestre->title : $specialite->slug. ' ' .$semestre->cycle->niveau !!} - {{ strtoupper($ville->nom) }}
         </h1>
         <div class="clearfix"></div>
 

@@ -166,15 +166,15 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="text-right">Année d'inscription / Registration year : </th>
-                                                    <td class="text-left"><span class="text-4">2022-2023</span></td>
+                                                    <td class="text-left"><span class="text-4">{{ $contrat->apprenant->academic_year->debut. ' ' .$contrat->apprenant->academic_year->fin }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="text-right">Ref. du relevé / Transcript Ref : </th>
-                                                    <td class="text-left"><span class="text-4">2023</span></td>
+                                                    <td class="text-left"><span class="text-4">{{ $academicYear->fin }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th class="text-right">Année académique / Academic Year:</th>
-                                                    <td class="text-left"><span class="text-4">2022-2023 </span></td>
+                                                    <td class="text-left"><span class="text-4">{{ $academicYear->debut }}-{{ $academicYear->fin }} </span></td>
                                                 </tr>
                                             </table>
                                         </div>

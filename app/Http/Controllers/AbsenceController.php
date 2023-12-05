@@ -239,11 +239,21 @@ class AbsenceController extends AppBaseController
         return view('absences.affiche', compact('contrats', 'sem', 'ecues'));
     }
 
-    public function afficheAbsence($semestre, $specialite ,$ville_id) {
+    public function afficheAbsence($semestre, $specialite, $ville_id) {
 
         $sem = $this->semestreRepository->findWithoutFail($semestre);
-        $cycle = $this->semestreRepository->findWithoutFail($semestre)->cycle;
         $city = $this->villeRepository->findWithoutFail($ville_id);
+
+        if($ville_id == 3) {
+            if($semestre == 1 || $semestre == 2) $cycle = 10;
+            else if($semestre == 3 || $semestre == 4) $cycle = 11;
+            else if($semestre == 5 || $semestre == 6) $cycle = 12;
+            else if($semestre == 7 || $semestre == 8) $cycle = 13;
+            else $cycle = 14;
+        } else {
+            $cycle = $this->semestreRepository->find($semestre)->cycle->id;
+        }
+       
 
         $ec = $this->ecueRepository->findWhere(['semestre_id' => $sem->id]);
         $ecues = [];
@@ -254,7 +264,7 @@ class AbsenceController extends AppBaseController
 
         $contrats = $this->contratRepository->findWhere([
             'specialite_id'=>$specialite,
-            'cycle_id' => $cycle->id,
+            'cycle_id' => $cycle,
             'ville_id' => $ville_id
         ]);
 
@@ -306,16 +316,26 @@ class AbsenceController extends AppBaseController
     }
 
     public function ficheEcue($semestre, $specialite, $id, $ville_id) {
-
+      
         $city = $this->villeRepository->findWithoutFail($ville_id);
         $specialites = $this->specialiteRepository->findWithoutFail($specialite);
-        $cycle = $this->semestreRepository->find($semestre)->cycle;
+        
+        if($ville_id == 3) {
+           if($semestre == 1 || $semestre == 2) $cycle = 10;
+           else if($semestre == 3 || $semestre == 4) $cycle = 11;
+           else if($semestre == 5 || $semestre == 6) $cycle = 12;
+           else if($semestre == 7 || $semestre == 8) $cycle = 13;
+           else $cycle = 14;
+        } else {
+            $cycle = $this->semestreRepository->find($semestre)->cycle->id;
+        }
+
         /*
         $contrats = $this->contratRepository->findWhere(['academic_year_id' => $this->academicYear->id,'cycle_id'=> $cycle->id, 'specialite_id' => $specialites->id]);
         */
         
         $filter1 = $this->academicYear->id;
-        $filter2 = $cycle->id;
+        $filter2 = $cycle;
         $filter3 = $specialites->id;
         
         $apprenants = Apprenant::with(['contrats' => function($query) use ($filter1, $filter2, $filter3, $ville_id){

@@ -23,6 +23,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use App\Notifications\SendMailNotification;
 use App\User;
+use App\Models\AcademicYear as AcademicYearModel;
 
 class ApprenantController extends AppBaseController
 {
@@ -109,10 +110,16 @@ class ApprenantController extends AppBaseController
     public function store(CreateApprenantRequest $request)
     {
         
-        if(!empty($this->apprenantRepository->findWhere(['nom'=>$request->input('nom'), 'prenom'=>$request->input('prenom'), 'dateNaissance'=> $request->input('dateNaissance')])->first())){
+        if(!empty($this->apprenantRepository->findWhere(['nom' => $request->input('nom'), 'prenom' => $request->input('prenom'), 'dateNaissance' => $request->input('dateNaissance')])->first())){
             Flash::error('Apprenant existe deja en base de données ');
             return redirect()->route('apprenants.index');
         }
+
+        /*$inscrip = AcademicYearModel::find($request->input('academic_year_id'));
+        $inscrip->apprenants()->withTrashed()->count();
+        $suffixe = $inscrip->apprenants()->withTrashed()->count() + 88;
+        return str_pad($suffixe,3,0,STR_PAD_LEFT);
+        return $matricule = $inscrip->fin. 'PIG'. str_pad($suffixe,3,0,STR_PAD_LEFT);*/
         
         $apprenant = $this->apprenantRepository->store($request);
         $academicYear = $request->input(['academic_year_id']);

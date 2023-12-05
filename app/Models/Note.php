@@ -7,10 +7,10 @@ use \Venturecraft\Revisionable\RevisionableTrait;
 
 class Note extends Model
 {
-    use RevisionableTrait;
+    //use RevisionableTrait;
 
-    protected $revisionCreationsEnabled = true;
-    protected $revisionForceDeleteEnabled = true;
+    //protected $revisionCreationsEnabled = true;
+    //protected $revisionForceDeleteEnabled = true;
 
     protected $fillable = [
         'enseignement_id',

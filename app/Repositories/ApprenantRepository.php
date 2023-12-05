@@ -38,7 +38,7 @@ class ApprenantRepository extends BaseRepository
         return Apprenant::class;
     }
 
-    public function store($request){
+    public function store($request) {
 
         $apprenant = $this->create($this->getApprenantInput($request));
         $n = $request->input('number');
@@ -66,7 +66,7 @@ class ApprenantRepository extends BaseRepository
     private function getApprenantInput($request)
     {
         $inscrip = AcademicYearModel::find($request->input('academic_year_id'));
-        $suffixe = $inscrip->apprenants()->withTrashed()->count() + 88;
+        $suffixe = $inscrip->apprenants()->withTrashed()->count() == 0 ? 1 : $inscrip->apprenants()->withTrashed()->count() + 133;
         $matricule = $inscrip->fin. 'PIG'. str_pad($suffixe,3,0,STR_PAD_LEFT);
         $inputApprenant = $request->only('nom', 'prenom', 'sexe', 'addresse', 'tel', 'phone', 'matricule', 'dateNaissance', 'lieuNaissance', 'nationalite', 'civilite', 'email', 'quartier', 'academic_year_id', 'etablissement_provenance', 'academic_mail', 'diplome', 'situation_professionnelle', 'region', 'entreprise', 'annee1',
         'etablissement1', 'ville1', 'classe1', 'diplome1', 'annee2', 'etablissement2', 'ville2', 
@@ -92,7 +92,8 @@ class ApprenantRepository extends BaseRepository
     private function getVille($id_ville){
         $ville = [
             1 => 'DLA',
-            2 => 'YDE'
+            2 => 'YDE',
+            3 => 'MRA',
         ];
 
         return $ville[$id_ville];
