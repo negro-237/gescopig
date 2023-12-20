@@ -49,13 +49,17 @@
         button.addEventListener('click', function(event) {
             
             const xhttp = new XMLHttpRequest();
+            document.querySelector('#alert').style.display = 'none';
            
             const academic_year = document.querySelector('[name="academic_year"]').value;
             const token = document.querySelector('[name="_token"]').value;
             const session = document.querySelector('[name="session"]').value;
             const level = document.querySelector('[name="level"]').value;
 
-            const url = "locked/"+session+"/"+academic_year+"/"+level;
+            var url = "{{ route('notes.locked', ['session' => ':session', 'academic_year' => ':academic_year', 'level' => ':level']) }}";
+            url = url.replace(':session', session);
+            url = url.replace(':academic_year', academic_year);
+            url = url.replace(':level', level);
 
             xhttp.onreadystatechange = function() {
 

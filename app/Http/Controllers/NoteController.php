@@ -728,7 +728,7 @@ class NoteController extends Controller
                     $note = $contrat->notes->where('enseignement_id', $enseignement->id)->first()->enjambement;
                 }
                 $totalUe += $note * $enseignement->credits;
-                if ($note < 9){
+                if ($note < 7){
                     $elim = $elimSemestre = true;
                 }
                 if($note >= 10) {
@@ -1475,49 +1475,49 @@ class NoteController extends Controller
     public function lock_notes($session, $academicYear, $level) {
        
         $this->middleware(['role:Admin']);
-
+ 
         $academic = $this->academicYearRepository->find($academicYear);
-        if($level == '1') $policies = $academic->policies()->whereIn('cycle_id', [1, 10]);
-        else if($level == '2') $policies = $academic->policies()->whereIn('cycle_id', [2, 11]);
-        else if($level == '3') $policies = $academic->policies()->whereIn('cycle_id', [3, 12]);
-        else if($level == '4') $policies = $academic->policies()->whereIn('cycle_id', [4, 13]);
+        if($level == '1') $policies = $academic->policies->whereIn('cycle_id', [1, 10]);
+        else if($level == '2') $policies = $academic->policies->whereIn('cycle_id', [2, 11]);
+        else if($level == '3') $policies = $academic->policies->whereIn('cycle_id', [3, 12]);
+        else if($level == '4') $policies = $academic->policies->whereIn('cycle_id', [4, 13]);
         else $policies = $academic->policies()->whereIn('cycle_id', [5, 14]);
         
+        $dataArray = json_decode($policies, true);
+        $transformedArray = array_values($dataArray);
+
         DB::beginTransaction();
        
         try {
 
-            $policies->get()->map(function ($contrat) use ($session) {
+            foreach ($transformedArray as $policy) {
                 
-                $policy = $this->contratRepository->find($contrat['id']);
+                $p = $this->contratRepository->find($policy['id']);
                 
-                if($policy) {
-                
-                    $policy->notes->map(function ($note) use ($session) {
-                        
-                        $nt = $this->noteRepository->find($note['id']);
+                if($p->notes->count() > 0) {
+                    
+                    foreach($p->notes as $note) {
 
                         $session === 'session1' ? 
-                            $nt->update(['state_session1' => !$note['state_session1']]) 
-                                : 
-                            $nt->update(['state_session2' => !$note['state_session2']])
-                        ;
-
-                    });
+                            $note->state_session1 = !$note['state_session1']
+                            :
+                            $note->state_session2 = !$note['state_session2'];
+                        $note->save();
+                    }
 
                 }
 
-            });
+            }
 
-            DB::commit();
+        DB::commit();
 
-        } catch (\Exception $e) {
+         } catch (\Exception $e) {
             DB::rollback();
             return [
                 "success" => false,
                 "message" => $e->getMessage()
             ];
-        }
+        } 
 
         return [
             "success" => true,

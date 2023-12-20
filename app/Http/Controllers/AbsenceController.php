@@ -139,8 +139,16 @@ class AbsenceController extends AppBaseController
     {
         $specialites = $this->specialiteRepository->findWithoutFail($specialite);
         $ec = $specialites->ecues->where('semestre_id', $semestre);
-        $cycle = $this->semestreRepository->find($semestre)->cycle;
-        $contrats = $this->contratRepository->findWhere(['academic_year_id' => $this->academicYear->id,'cycle_id'=> $cycle->id, 'specialite_id' => $specialites->id, 'ville_id' => $ville_id]);
+        if($ville_id == 3) {
+            if($semestre == 1 || $semestre == 2) $cycle = 10;
+            else if($semestre == 3 || $semestre == 4) $cycle = 11;
+            else if($semestre == 5 || $semestre == 6) $cycle = 12;
+            else if($semestre == 7 || $semestre == 8) $cycle = 13;
+            else $cycle = 14;
+        } else {
+            $cycle = $this->semestreRepository->find($semestre)->cycle->id;
+        }
+        $contrats = $this->contratRepository->findWhere(['academic_year_id' => $this->academicYear->id,'cycle_id'=> $cycle, 'specialite_id' => $specialites->id, 'ville_id' => $ville_id]);
         $city = $this->villeRepository->findWithoutFail($ville_id);
 
         $ecues= array();

@@ -105,12 +105,13 @@
             <div class="col-xs-6">
                 <h1 class="text-center">PROCES VERBAL DE DELIBERATION</h1>
                 <h1 class="text-center">Résultat des Examens {{ $semestre->title. ' ' .$session }}</h1>
+                <!-- <h1 class="text-center">Résultat des Enjambements Semestre 4 session2</h1> -->
                 <h1 class="text-center">Domaine : {{ ($contrats->first()->specialite->slug == "MAFIDA") ? "Sciences Juridiques, Politiques et Administratives" : "Sciences Economiques et de Gestion" }}</h1>
                 <h1 class="text-center">Mention : {{ ($contrats->first()->specialite->slug == "MAFIDA") ? "Sciences Juridiques" : "Sciences de Gestion" }}</h1>
                 <h1 class="text-center">Spécialité : {{ $contrats->first()->specialite->slug. " (" .$contrats->first()->specialite->title. ")" }}</h1>
                 <h1 class="text-center">Niveau : {{$semestre->cycle->label. ' ' .$semestre->cycle->niveau}}</h1>
                 <h1 class="text-center">Année Académique : {{ $academicYear->debut. '-' .$academicYear->fin }}</h1>
-                <!-- <h1 class="text-center">Année Académique : 2022-2023</h1> --> 
+                <!-- <h1 class="text-center">Année Académique : 2022-2023</h1> -->  
             </div>
             <div class="col-xs-3" id="ref">
                 <div class="pull-right">
@@ -231,16 +232,15 @@
                             <td>
                                 {{ $contrat->ue_infos->where('ue_id', $ue->id)->first() ? $contrat->ue_infos->where('ue_id', $ue->id)->first()->moyenne : "" }}
                             </td>
-
-                                @if($contrat->ue_infos->where('ue_id', $ue->id)->first() && $contrat->ue_infos->where('ue_id', $ue->id)->first()->mention == 'Validé')
-                                    <td class="bg-success">
-                                        V
-                                    </td>
-                                @else
-                                    <td class="bg-danger">
-                                        NV
-                                    </td>
-                                @endif
+                            @if($contrat->ue_infos->where('ue_id', $ue->id)->first() && $contrat->ue_infos->where('ue_id', $ue->id)->first()->mention == 'Validé')
+                                <td class="bg-success">
+                                    V
+                                </td>
+                            @else
+                                <td class="bg-danger">
+                                    NV
+                                </td>
+                            @endif
                         @endforeach
                         <td>{{ $contrat->semestre_infos->where('semestre_id', $semestre->id)->first()->nbUeValid }}</td>
                         <td>{{ $contrat->semestre_infos->where('semestre_id', $semestre->id)->first()->moyenne }}</td>

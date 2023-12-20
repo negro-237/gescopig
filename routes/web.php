@@ -17,6 +17,7 @@ Route::prefix('admin')->namespace('Back')->group(function () {
     Route::name('admin')->get('/', 'AdminController@index');
 });
 Route::get('/test', function() {
+    return app_path();
     $users = App\User::with('roles')->get();
     $data = [];
     foreach($users as $user) {
@@ -128,7 +129,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('catUes', 'CatUeController')->except('show');
     Route::resource('ues', 'UeController')->except('show');
 
-    Route::get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes');
+    Route::get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes')->name('notes.locked');
     Route::get('notes/lock', 'NoteController@getDataForLockNotes');
     Route::get('notes/search/{n}/{type?}/{ville_id?}', 'NoteController@search')->name('notes.search');
     // Routes pour l'enregistrement des notes

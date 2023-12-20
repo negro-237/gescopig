@@ -155,12 +155,13 @@
                     <div class="row">
                         <div class="col-md-2 col-sm-2"></div>
                         <div class="col-md-1 col-sm-1"><strong>Le<br>The</strong></div>
-                        <div class="col-md-9 col-sm-9">
+                        <div class="col-md-7 col-sm-7">
                             <p>
                                 <strong>DIPLÔME DE LICENCE PROFESSIONNELLE EN SCIENCES DE GESTION</strong><br>
                                 <strong>Professional Bachelor Degree in Business Administration</strong>
                             </p>
                         </div>
+                        <div class="col-md-2 col-sm-2">image here</div>
                     </div>
 
                     <div class="row">
