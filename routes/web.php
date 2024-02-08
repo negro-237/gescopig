@@ -17,6 +17,7 @@ Route::prefix('admin')->namespace('Back')->group(function () {
     Route::name('admin')->get('/', 'AdminController@index');
 });
 Route::get('/test', function() {
+    return date('Y');
     return app_path();
     $users = App\User::with('roles')->get();
     $data = [];

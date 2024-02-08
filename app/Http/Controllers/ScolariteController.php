@@ -23,6 +23,8 @@ use App\Repositories\SpecialiteRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use function PHPSTORM_META\type;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
 
 class ScolariteController extends Controller
 {
@@ -207,7 +209,41 @@ class ScolariteController extends Controller
             "CMD" => "Communication, Marketing and Digital",
         ];
 
-        return view("documents.diplome_de_licence", compact('contrats', 'session_en', 'session_fr', 'speciality'));
+        $average = $contrats[0]->semestre_infos->sum('moyenne') / 2;
+        $result = "";
+
+        if ($average < 12) {
+            $result = "Passable";
+        }
+        else if ($average < 14) {
+            $result = "Assez bien";
+        }
+        else if ($average < 16) {
+            $result = "Bien";
+        }
+        else if ($average < 18) {
+            $result = "Tres Bien";
+        }
+        else if ($average <= 20) {
+            $result = "Excellent";
+        }
+
+        $textLines = [
+            'Matricule: ' .$contrats[0]->apprenant->matricule,
+            'Noms: ' .Str::ascii($contrats[0]->apprenant->nom),
+            'Prenoms: ' .Str::ascii($contrats[0]->apprenant->prenom),
+            'Date de Naissance: ' .Carbon::parse($contrats[0]->apprenant->dateNaissance)->format('d/m/Y'),
+            'Lieu de Naissance: ' .Str::ascii($contrats[0]->apprenant->lieuNaissance),
+            'Diplome: DIPLOME DE LICENCE PROFESSIONNEL EN SCIENCES DE GESTION',
+            'Specialite: ' .Str::ascii($contrats[0]->specialite->title),
+            'Mention: '.$result
+            // Add more lines as needed
+        ];
+
+        $text = implode(PHP_EOL, $textLines);
+        $qrcode = QrCode::size(80)->generate($text);
+
+        return view("documents.diplome_de_licence", compact('contrats', 'session_en', 'session_fr', 'speciality', 'qrcode'));
     }
 
     public function master($n){
@@ -267,7 +303,41 @@ class ScolariteController extends Controller
             "MAMREH" => "Management des ressources humaines"
         ];
 
-        return view("documents.diplome_de_master", compact('contrats', 'session_en', 'session_fr', 'speciality'));
+        $average = $contrats[0]->semestre_infos->sum('moyenne') / 2;
+        $result = "";
+
+        if ($average < 12) {
+            $result = "Passable";
+        }
+        else if ($average < 14) {
+            $result = "Assez bien";
+        }
+        else if ($average < 16) {
+            $result = "Bien";
+        }
+        else if ($average < 18) {
+            $result = "Tres Bien";
+        }
+        else if ($average <= 20) {
+            $result = "Excellent";
+        }
+
+        $textLines = [
+            'Matricule: ' .$contrats[0]->apprenant->matricule,
+            'Noms: ' .Str::ascii($contrats[0]->apprenant->nom),
+            'Prenoms: ' .Str::ascii($contrats[0]->apprenant->prenom),
+            'Date de Naissance: ' .Carbon::parse($contrats[0]->apprenant->dateNaissance)->format('d/m/Y'),
+            'Lieu de Naissance: ' .Str::ascii($contrats[0]->apprenant->lieuNaissance),
+            'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
+            'Specialite: ' .Str::ascii($contrats[0]->specialite->title),
+            'Mention :' .$result
+            // Add more lines as needed
+        ];
+
+        $text = implode(PHP_EOL, $textLines);
+        $qrcode = QrCode::size(80)->generate($text);
+
+        return view("documents.diplome_de_master", compact('contrats', 'session_en', 'session_fr', 'speciality', 'qrcode'));
     }
 
     public function inscrits(){
@@ -381,7 +451,7 @@ class ScolariteController extends Controller
 
     }
 
-    public function certificat($id,$type, Request $request){
+    public function certificat($id,$type, Request $request) {
         $contrat = $this->contratRepository->findWithoutFail($id);
         $academic = $this->academicYear;
         $titre = $request->titre;
@@ -393,7 +463,7 @@ class ScolariteController extends Controller
         $view = '';
         $document = null;
 
-        if($type == 'inscription'){
+        if($type == 'inscription') {
             $view = 'inscription';
             foreach ($currentContrat as $c){
                 (isset($c->inscription)) ? $ids[] = $c->inscription->id : ''; // Si l'on dejà imprimer le document de l'apprenant on ne l'enregistre plus
@@ -406,9 +476,9 @@ class ScolariteController extends Controller
             }
         }
 
-        if($type == 'preinscription'){
+        if($type == 'preinscription') {
             $view = 'inscription';
-            foreach ($currentContrat as $c){
+            foreach ($currentContrat as $c) {
                 (isset($c->preinscription)) ? $ids[] = $c->preinscription->id : '';
             }
             if (!isset($contrat->preinscription)){
@@ -432,18 +502,25 @@ class ScolariteController extends Controller
             }
         }
 
-        if($type == 'attestation'){
+        if($type == 'attestation') {
+            $att = $this->attestationRepository->whereYear('created_at', date('Y'))->get();// liste des contrats de l'annee civile en cours
+           
             $view = 'certificat';
-            foreach ($currentContrat as $c){
+            /*foreach ($att as $c) {
+                $ids[] = $c->attestation->id : '';
                 (isset($c->attestation)) ? $ids[] = $c->attestation->id : '';
-            }
-            if (!isset($contrat->attestation)){
+            } */
+            /*if (!isset($contrat->attestation)) {
                 $document = $this->attestationRepository->create(['contrat_id' => $contrat->id, 'rang' => sizeof($ids)+1]);
-            }
-            else{
+            }*/
+
+            $document = $this->attestationRepository->create(['contrat_id' => $contrat->id, 'rang' => $att->count() + 1]);
+            
+           /*  else {
                 $document = $contrat->attestation;
-            }
+            } */
         }
+        
         return view('documents.'.$view, compact('type', 'contrat', 'document', 'titre', 'signataire', 'circuit', 'academic', 'semestre'));
     }
 

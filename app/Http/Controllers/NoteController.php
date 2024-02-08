@@ -372,8 +372,17 @@ class NoteController extends Controller
         
         $enseignement = $this->enseignementRepository->findWithoutFail($id);
         $specialite = $enseignement->specialite->id;
-        $cycle = $enseignement->ecue->semestre->cycle->id;
-        $sem = $enseignement->ecue->semestre->id;
+        $semestre = $enseignement->ecue->semestre->id;
+
+        if($ville_id == 3) {
+            if($semestre == 1 || $semestre == 2) $cycle = 10;
+            else if($semestre == 3 || $semestre == 4) $cycle = 11;
+            else if($semestre == 5 || $semestre == 6) $cycle = 12;
+            else if($semestre == 7 || $semestre == 8) $cycle = 13;
+            else $cycle = 14;
+        } else {
+            $cycle = $enseignement->ecue->semestre->cycle->id;
+        }
         
         // $contrats = $this->contratRepository->findWhere(['specialite_id' => $specialite, 'cycle_id' => $cycle, 'academic_year_id' => $this->anneeAcademic->id]);
         
@@ -382,8 +391,8 @@ class NoteController extends Controller
             ->where('specialite_id', $specialite)
             ->where('cycle_id', $cycle)
             ->where('ville_id', $ville_id)
-           // ->where('inscription_status', '<>', 'RAS')
-           // ->where('inscription_status', '<>', 'Abandon')
+            ->where('inscription_status', '<>', 'RAS')
+            ->where('inscription_status', '<>', 'Abandon')
             ->where('contrats.academic_year_id', $enseignement->academic_year_id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
@@ -563,17 +572,29 @@ class NoteController extends Controller
      *
      */
 
-    public function a_deliberer($sem, $spec, $session, Request $request){
+    public function a_deliberer($sem, $spec, $session, Request $request) {
 
-        $cycle = $this->semestreRepository->findWithoutFail($sem)->cycle;
+        $cycle = $this->semestreRepository->findWithoutFail($sem)->cycle->id;
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
+        if($cycle == 1) {
+            $cycle_array = [1, 10];
+        } else if($cycle == 2) {
+            $cycle_array = [2, 11];
+        } else if($cycle == 3) {
+            $cycle_array = [3, 12];
+        } else if($cycle == 4) {
+            $cycle_array = [4, 13];
+        } 
+        else {
+            $cycle_array = [5, 14];
+        }
         //on recupere tous les contrats par ordre alphabetique
 
         $c = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->whereIn('cycle_id', $cycle_array)
             ->where('contrats.academic_year_id', $aa->id)
             //->where('inscription_status', '<>', 'RAS')
             ->orderBy('apprenants.nom')
@@ -1175,16 +1196,38 @@ class NoteController extends Controller
         $semestre = $this->semestreRepository->findWithoutFail($sem);
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
         
-        $contrats = $this->contratRepository->findWhere([
+        $cycle = $semestre->cycle->id;
+
+        if($cycle == 1) {
+            $cycle_array = [1, 10];
+        } else if($cycle == 2) {
+            $cycle_array = [2, 11];
+        } else if($cycle == 3) {
+            $cycle_array = [3, 12];
+        } else if($cycle == 4) {
+            $cycle_array = [4, 13];
+        } 
+        else {
+            $cycle_array = [5, 14];
+        }
+        //on recupere tous les contrats par ordre alphabetique
+
+        $contrats = Contrat::select('contrats.*')
+            ->where('specialite_id', $specialite)
+            ->whereIn('cycle_id', $cycle_array)
+            ->where('contrats.academic_year_id', $aa->id)
+            //->where('inscription_status', '<>', 'RAS')
+            ->get();
+        /* $contrats = $this->contratRepository->findWhere([
             'specialite_id' => $specialite, 
             'cycle_id' => $semestre->cycle_id, 
             'academic_year_id' => $aa->id,
-        ]);
+        ]); */
 
         return view('notes.imprime', compact('contrats', 'semestre'));
     }
 
-    public function releve($session, $contrat, $semestre){
+    public function releve($session, $contrat, $semestre) {
 
         $contrat = $this->contratRepository->findWithoutFail($contrat);
 
@@ -1314,14 +1357,23 @@ class NoteController extends Controller
 
         $specialite = $this->specialiteRepository->findWithoutFail($spec);
         $semestre = $this->semestreRepository->findWithoutFail($sem);
-        $cycle = $this->semestreRepository->findWithoutFail($semestre->id)->cycle;
+        if($ville_id == 3) {
+            if($sem == 1 || $sem == 2) $cycle = 10;
+            else if($sem == 3 || $sem == 4) $cycle = 11;
+            else if($sem == 5 || $sem == 6) $cycle = 12;
+            else if($sem == 7 || $sem == 8) $cycle = 13;
+            else $cycle = 14;
+        } else {
+            $cycle = $this->semestreRepository->find($sem)->cycle->id;
+        }
+        //$cycle = $this->semestreRepository->findWithoutFail($semestre->id)->cycle;
 
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
         $ville_id ? $contrats = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->where('cycle_id', $cycle)
             ->where('ville_id', $ville_id)
             ->where('contrats.academic_year_id', $aa->id)
             ->where('inscription_status', '<>', 'RAS')
@@ -1333,7 +1385,7 @@ class NoteController extends Controller
         $contrats = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->where('cycle_id', $cycle)
             ->where('contrats.academic_year_id', $aa->id)
             ->where('inscription_status', '<>', 'RAS')
             ->where('inscription_status', '<>', 'Abandon')

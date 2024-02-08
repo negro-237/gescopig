@@ -32,7 +32,8 @@
                     </div>
                     <div class="form-group col-xs-4">
                         {!! Form::label('nationalite', 'Nationalite') !!}<span class="bold"><b class="notif"> * </b>:</span>
-                        {!! Form::text('nationalite', null, ['class' => 'form-control']) !!}
+                        {!! Form::select('nationalite',isset($countries) ? $countries : [], null, ['class' => 'form-control', 'placeholder' => 'Sélectionnez la nationalité']) !!}
+                        <!-- {!! Form::text('nationalite', null, ['class' => 'form-control']) !!} -->
                     </div>
                 </div>
 

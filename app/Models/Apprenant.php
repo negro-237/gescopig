@@ -287,4 +287,8 @@ class Apprenant extends Model
     public function semestre_infos(){
         return $this->hasManyThrough(SemestreInfo::class, Contrat::class);
     }
+
+    public function country() {
+        return $this->belongsTo(Pays::class, 'nationalite');
+    }
 }

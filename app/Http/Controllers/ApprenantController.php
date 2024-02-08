@@ -17,6 +17,7 @@ use App\Repositories\CycleRepository;
 use App\Repositories\ScolariteRepository;
 use App\Repositories\SpecialiteRepository;
 use App\Repositories\VilleRepository;
+use App\Repositories\PaysRepository;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -36,8 +37,9 @@ class ApprenantController extends AppBaseController
     protected $contratRepository;
     protected $academicYearRepository;
     protected $villeRepository;
+    protected $countryRepository;
 
-    public function __construct(ApprenantRepository $apprenantRepo, SpecialiteRepository $specialiteRepository, ContratRepository $contratRepository,
+    public function __construct(ApprenantRepository $apprenantRepo, SpecialiteRepository $specialiteRepository, ContratRepository $contratRepository,PaysRepository $countryRepository,
                                 CycleRepository $cycleRepository, AcademicYearRepository $academicYearRepository, ScolariteRepository $scolariteRepository, AcademicYear $academicYear, VilleRepository $villeRepository)
     {
         $this->apprenantRepository = $apprenantRepo;
@@ -48,6 +50,7 @@ class ApprenantController extends AppBaseController
         $this->academicYear = $academicYear->getCurrentAcademicYear();
         $this->academicYearRepository = $academicYearRepository;
         $this->villeRepository = $villeRepository;
+        $this->countryRepository = $countryRepository;
     }
 
     /**
@@ -74,10 +77,12 @@ class ApprenantController extends AppBaseController
         $spe = $this->specialiteRepository->all();
         $c = $this->cycleRepository->all();
         $v = $this->villeRepository->all();
+        $p_countries = $this->countryRepository->all();
 
         $cycles = array();
         $specialites = array();
         $villes = array();
+        $countries = array();
 
         $academicYears = [];
         $ay = $this->academicYearRepository->all();
@@ -97,7 +102,11 @@ class ApprenantController extends AppBaseController
             $villes[$ville->id] = $ville->nom;
         }
 
-        return view('apprenants.create', compact('specialites', 'cycles', 'academicYears', 'villes'));
+        foreach($p_countries as $country){
+            $countries[$country->id] = strtoupper($country->nom);
+        }
+
+        return view('apprenants.create', compact('specialites', 'cycles', 'academicYears', 'villes', 'countries'));
     }
 
     /**

@@ -22,7 +22,7 @@
                 <td>{!! $apprenant->matricule !!}</td>
                 <td>{!! $apprenant->nom. ' '. $apprenant->prenom !!}</td>
                 <td>{!! Carbon\Carbon::parse($apprenant->dateNaissance)->format('d-m-Y') !!}</td>
-                <td>{!! $apprenant->nationalite !!}</td>
+                <td>{{  $apprenant->country ? ucfirst($apprenant->country->nom) : $apprenant->nationalite }}</td>
                 <td>{!! $apprenant->email !!}</td>
                 <td>{!! $apprenant->etablissement_provenance !!}</td>
                 <td>{!! ($apprenant->tutors->first())?$apprenant->tutors->first()->name : 'NC' !!}</td>

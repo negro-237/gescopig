@@ -23,6 +23,7 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.5.0",
+        "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-permission": "^2.23",
         "venturecraft/revisionable": "^1.39",
         "yajra/laravel-datatables-buttons": "3.*",
@@ -72,6 +73,10 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "composer/installers": false,
+            "kylekatarnls/update-helper": false
+        }
     }
 }

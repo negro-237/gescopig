@@ -45,6 +45,11 @@ class PaysController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nom' => 'required|unique:pays,nom',
+            'code' => 'required|unique:pays,code'
+        ]);
+
         $input = $request->all();
 
         $pays = $this->paysRepository->create($input);
