@@ -19,4 +19,8 @@ class AcademicYearRepository extends BaseRepository
         // TODO: Implement model() method.
         return AcademicYear::class;
     }
+
+    public function currentAcademicYear() {
+        return AcademicYear::where('actif', true)->first();
+    }
 }

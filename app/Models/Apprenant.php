@@ -272,7 +272,7 @@ class Apprenant extends Model
         return $this->hasMany(MedicalExam::class);
     }
 
-    public function academic_year(){
+    public function academic_year() {
         return $this->belongsTo(AcademicYear::class);
     }
 
@@ -290,5 +290,9 @@ class Apprenant extends Model
 
     public function country() {
         return $this->belongsTo(Pays::class, 'nationalite');
+    }
+
+    public function medicals() {
+        return $this->hasMany(Medical::class, 'student_id');
     }
 }

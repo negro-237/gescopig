@@ -280,5 +280,12 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::get('users-logs', 'UserController@userLogs')->name('user-logs');
     // Afficher les logs d'un utilisateur
     Route::get('users-logs/{id}', 'UserController@showUserLogs')->name('show-logs');
+
+    Route::get('medicals/{student_id}', 'MedicalController@index')->name('medicals.index');
+    Route::get('medicals/edit/{id}', 'MedicalController@edit')->name('medicals.edit');
+    Route::get('medicals/create/{student_id}', 'MedicalController@create')->name('medicals.create');
+    Route::post('medicals/store', 'MedicalController@store')->name('medicals.store');
+    Route::patch('medicals/{id}', 'MedicalController@update')->name('medicals.update');
+    Route::delete('medicals/{id}', 'MedicalController@destroy')->name('medicals.destroy');
 });
 
