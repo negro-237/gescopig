@@ -33,13 +33,7 @@ class MedicalController extends AppBaseController
         ApprenantRepository $apprenantRepository,
         Request $request)
     {
-        if (request()->server("SCRIPT_NAME") !== 'artisan') {
-
-            if ($request->route()->getName() == 'absences.store')
-                $this->middleware(['permission:create absences']);
-            if ($request->route()->getName() == 'absences.update')
-                $this->middleware(['permission:edit absences']);
-        }
+        $this->middleware('role:nurses');
 
         $this->medicalRepository = $medicalRepository;
         $this->academicRepository = $academicRepository;

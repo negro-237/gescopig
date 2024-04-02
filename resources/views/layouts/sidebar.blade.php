@@ -276,7 +276,7 @@
             </li>
             @endcan
 
-            @can ('read apprenants')
+            @can('read apprenants')
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Apprenants</span>
             <span class="pull-right-container">
@@ -291,6 +291,22 @@
                     <li><a href="{!! url('apprenants') !!}">Liste de Apprenants</a></li>
                         <li><a href="{{ url('contrats/all') }}">résumé apprenants a imprimer</a></li>
                     @endcan
+                    @can('students medical')
+                        <li><a href="{!! url('apprenants') !!}">Liste de Apprenants</a></li>
+                    @endcan
+                </ul>
+            </li>
+            @endcan
+
+            @can('students medical')
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Apprenants</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{!! url('apprenants') !!}">Liste de Apprenants</a></li>
                 </ul>
             </li>
             @endcan
