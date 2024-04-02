@@ -7,10 +7,10 @@ use \Venturecraft\Revisionable\RevisionableTrait;
 
 class UeInfo extends Model
 {
-    use RevisionableTrait;
+    //use RevisionableTrait;
 
-    protected $revisionCreationsEnabled = true;
-    protected $revisionForceDeleteEnabled = true;
+    //protected $revisionCreationsEnabled = true;
+    //protected $revisionForceDeleteEnabled = true;
     
     protected $fillable = [
         'ue_id',

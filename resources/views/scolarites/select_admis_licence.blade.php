@@ -24,11 +24,11 @@
 
             <div class="box-header">
                 <div class="form-group col-xs-6 ">
-                    {!! Form::label('session_fr', 'Session (FR):') !!}
+                    {!! Form::label('session_fr', 'Admission:') !!}
                     {!! Form::text('session_fr', null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group col-xs-6">
-                    {!! Form::label('session_en', 'Session (EN) :') !!}
+                    {!! Form::label('session_en', 'Session:') !!}
                     {!! Form::text('session_en', null, ['class' => 'form-control']) !!}
                 </div>
                 <!--

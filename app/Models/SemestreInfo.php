@@ -7,10 +7,10 @@ use \Venturecraft\Revisionable\RevisionableTrait;
 
 class SemestreInfo extends Model
 {
-    use RevisionableTrait;
+    //use RevisionableTrait;
 
-    protected $revisionCreationsEnabled = true;
-    protected $revisionForceDeleteEnabled = true;
+    //protected $revisionCreationsEnabled = true;
+    //protected $revisionForceDeleteEnabled = true;
 
     protected $fillable = [
         'semestre_id',

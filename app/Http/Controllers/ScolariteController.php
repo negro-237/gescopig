@@ -145,12 +145,13 @@ class ScolariteController extends Controller
             "CMD" => "Communication, Marketing and Digital",
             "MAACO" => "Audit and Management Control",
             "MAFINE" => "Finance",
-            "MATRAS" => "Transport an Supply Chain Management",
+            "MATRAS" => "Transport and Supply Chain Management",
             "MACMAD" => "Communication, Marketing and Digital",
             "MAQUAP" => "Quality and Project Management",
             "MAFIDA" => "Taxation and Business Law",
             "MAMES" => "Corporate Management",
-            "MAMREH" => "Management des ressources humaines"
+            "MAMREH" => "Management des ressources humaines",
+            "MSD" => "Management et strategie digitale"
         ];
 
         return view("documents.attestation_reussite", compact('contrats', 'session_en', 'session_fr', 'date', 'speciality'));
@@ -240,8 +241,19 @@ class ScolariteController extends Controller
             // Add more lines as needed
         ];
 
+       /*  $textLines = [
+            'Matricule: FOUE30071998' ,
+            'Noms: FOUELEFACK FOSSO',
+            'Prenoms: Audrey Roxane',
+            'Date de Naissance: 30 Juillet 1998',
+            'Lieu de Naissance: Douala',
+            'Diplome: DIPLOME DE LICENCE PROFESSIONNELLE EN SCIENCES DE GESTION',
+            'Specialite: Negociation et Communication Multimedia',
+            'Mention : Assez bien'
+        ]; */
+
         $text = implode(PHP_EOL, $textLines);
-        $qrcode = QrCode::size(80)->generate($text);
+        $qrcode = QrCode::size(60)->generate($text);
 
         return view("documents.diplome_de_licence", compact('contrats', 'session_en', 'session_fr', 'speciality', 'qrcode'));
     }
@@ -286,7 +298,7 @@ class ScolariteController extends Controller
         return view('scolarites.select_admis_master', compact('contrats'));
     }
 
-    public function diplome_master(Request $request){
+    public function diplome_master(Request $request) {
         $session_fr = $request->session_fr;
         $session_en = $request->session_en;
         //$date = $request->date;
@@ -295,11 +307,11 @@ class ScolariteController extends Controller
         $speciality = [
             "MAACO" => "Audit and Management Control",
             "MAFINE" => "Finance",
-            "MATRAS" => "Transport an Supply Chain Management",
+            "MATRAS" => "Transport and Supply Chain Management",
             "MACMAD" => "Communication, Marketing and Digital",
             "MAQUAP" => "Quality and Project Management",
             "MAFIDA" => "Taxation and Business Law",
-            "MAMES" => "Corporate Management",
+            "MAMES" => "Business Management",
             "MAMREH" => "Management des ressources humaines"
         ];
 
@@ -330,12 +342,22 @@ class ScolariteController extends Controller
             'Lieu de Naissance: ' .Str::ascii($contrats[0]->apprenant->lieuNaissance),
             'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
             'Specialite: ' .Str::ascii($contrats[0]->specialite->title),
-            'Mention :' .$result
-            // Add more lines as needed
-        ];
+            'Mention : ' .$result
+       ];
+
+       /*  $textLines = [
+            'Matricule: 2020PIG069' ,
+            'Noms: ETAME ' ,
+            'Prenoms: Patrick Rene Kevin',
+            'Date de Naissance: 24 Mai 1995',
+            'Lieu de Naissance: 23h15 Bonaberi',
+            'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
+            'Specialite: Management de la Qualite et des Projets',
+            'Mention : Assez bien'
+        ]; */
 
         $text = implode(PHP_EOL, $textLines);
-        $qrcode = QrCode::size(80)->generate($text);
+        $qrcode = QrCode::size(60)->generate($text);
 
         return view("documents.diplome_de_master", compact('contrats', 'session_en', 'session_fr', 'speciality', 'qrcode'));
     }

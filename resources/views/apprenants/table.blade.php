@@ -43,8 +43,8 @@
                         @can('delete apprenants')
                             {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
                         @endcan
-                        @can('edit tutors')
-                            <a href="{!! route('medicals.index', [$apprenant->id]) !!}" class='btn btn-default btn-xs' alt="Fiche medicale"><i class="glyphicon glyphicon-user"></i></a>
+                        @can('students medical')
+                            <a href="{!! route('medicals.index', [$apprenant->id]) !!}" class='btn btn-default btn-xs' alt="Fiche medicale"><i class="glyphicon glyphicon-paperclip"></i></a>
                         @endcan
                         
                     </div>

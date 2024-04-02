@@ -63,14 +63,25 @@
                                     <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             @else
-                                <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($type) ? $type : '']) !!}" class="small-box-footer ">
-                                    <font style="vertical-align: inherit;">
+                                @if($method == 'rn_intermediaire')
+                                    <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($ville_id) ? $ville_id : '', isset($type) ? $type : '']) !!}" class="small-box-footer ">
                                         <font style="vertical-align: inherit;">
-                                            {!! $semestre->title !!}
+                                            <font style="vertical-align: inherit;">
+                                                {!! $semestre->title !!}
+                                            </font>
                                         </font>
-                                    </font>
-                                    <i class="fa fa-arrow-circle-right"></i>
-                                </a>
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                @else
+                                    <a href="{!! route($model .'.'.$method,[$semestre->id, $specialite->id, isset($type) ? $type : '']) !!}" class="small-box-footer ">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">
+                                                {!! $semestre->title !!}
+                                            </font>
+                                        </font>
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                @endif
                             @endif
                         @endforeach
                     @endif

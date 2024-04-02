@@ -28,7 +28,7 @@
             }
             .born {
                 overflow-wrap: break-word;
-                max-width: 200px;
+                max-width: 190px;
             }
         }
     </style>
@@ -43,7 +43,7 @@
                     <div class="col-md-8">
                         <p style="text-transform:uppercase;line-height: 12px">
                             <strong class="printed">
-                                Le ministre d'etat, ministre de l'enseignement superieur, chancelier des ordres academiques </br>
+                                Le ministre d'etat, ministre de l'enseignement supérieur, chancelier des ordres académiques </br>
                             </strong>
                             <strong class="printed">
 
@@ -52,33 +52,35 @@
                             </strong>
                         </p>
                         <p style="font-size: 11px; margin-top: -10px;line-height: 12px">
+                            <i>
                                 Vu le décret n°93/030 portant organisation de l'Université de Douala,</br>
                                 Mindful of decree N° 93/030 to organize the administrative and academic structure of the University of Douala</br>
                                 Vu les textes en vigueur,</br>
-                                Mindful of the text in force
+                                Mindful of the textes in force
+                            </i>  
                         </p>
                     </div>
-                    <div class="col-md-4" style="display: flex; align-items: end">
-                        <p style="text-transform:uppercase"></br>
+                    <!-- <div class="col-md-4">
+                        <p style="text-transform:uppercase">
                             <strong class="printed">N°<span style="text-decoration: underline">
-                              &ensp;&ensp;&ensp;&ensp;&ensp;
-                            </span>minesup/sg/dcaa/ud/essec/escmpc</strong>
+                              &ensp;&ensp;
+                            </span>minesup/dcaa/ud/essec/escmp</strong>
                         </p>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="row">
-                    <div class="col-md-10">
-                        <p style="font-size: 11px; line-height: 12px; margin-top: -10px">
-                            Vu <span>l'arrêté ministériel N° 13/0583/MINESUP du 02 décembre 2013 ouvrant l'Ecole Supérieure de Commerce et de Management Pigier Cameroun </br>
-                            Mindful of the Ministerial decree N° 13/0583/MINESUP on the 2<sup>nd</sup> of december 2013 opening the Advanced School of Commerce and Management </span>
+                    <div class="col-md-9">
+                        <p style="font-size: 11px; line-height: 12px; margin-top: -7px">
+                            Vu <span>L'arrêté ministeriel N° 13/0583/MINSUP du 02 décembre 2013 ouvrant L'institut Supérieur de Commerce et de Management PIGIER Cameroun </br>
+                            Mindful of the Ministerial decree N° 13/0583/MINSUP of the 2 december 2013 opening the Advanced School of Commerce and Management </span>
                         </p>
-                        <p style="font-size: 9.5px;margin-top: -10px; line-height: 12px;">
-                            Vu l'accord entre l'Université de Douala et l'Ecole Supérieure de Commerce et de Management Pigier Cameroun validé par le MINESUP le 23 mai 2013</br>
+                        <p style="font-size: 10px;margin-top: -7px">
+                            Vu l'accord entre l'Université de Douala et l'Ecole Superieure de Commerce et de Management Pigier-Cameroun validé par le MINESUP le 23 mai 2013</br>
                             Mindful of the framework agreement between the University of Douala and 
-                            <span>the Advanced School of Commerce and Management approved, by the Minister of Higher Education on the 23<sup>rd</sup> of may 2013</span></br>
-                            Vu le texte accordant la tutelle technique pour le programme de formation entre l'ESSEC et l'ESCM Pigier Cameroun</br>
-                            Mindful of the text approving the technical mentorship for the training program between ESSEC and ESCM Pigier Cameroon 
+                            <span>the Advanced School of Commerce and Management approved, by the Minister of Higher Education on May 2013</span></br>
+                            Vu le texte accordant la tutelle technique pour (le programme de formation) entre l'ESSEC et l'ESCM Pigier Cameroun</br>
+                            Mindful of the text approving the technical mentorship for the training programme between ESSEC and ESCM Pigier Cameroon 
                         </p>
                     </div>
                     <div class="col-md-2">{{ $qrcode }}</div>
@@ -119,8 +121,8 @@
                         <div class="col-sm-7">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <strong>Né(e) le </strong><br>
-                                    <small>Born on the</small>
+                                    <strong>Né(e) le, </strong><br>
+                                    <small>Born on</small>
                                 </div>
                                 <div class="col-sm-4" style="font-size: 12px">
                                     @if($contrat->apprenant->dateNaissance->formatLocalized('%B') == "January")
@@ -129,7 +131,7 @@
                                         </strong>
                                     @elseif($contrat->apprenant->dateNaissance->formatLocalized('%B') == "February")
                                         <strong>
-                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d Février %Y') }}
+                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d Fevrier %Y') }}
                                         </strong>
                                     @elseif($contrat->apprenant->dateNaissance->formatLocalized('%B') == "March")
                                         <strong>
@@ -169,17 +171,16 @@
                                         </strong>
                                     @elseif($contrat->apprenant->dateNaissance->formatLocalized('%B') == "December")
                                         <strong>
-                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d Décembre %Y') }}
-                                        </strong> 
+                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d December %Y') }}
+                                        </strong>
                                     @endif
-                                   <!-- <strong>20 Janvier 1996</strong> -->
                                 </div>
                                 <div class="col-sm-1">
                                     <strong class="paragraphe2" style="text-transform: uppercase">à </strong><br>
                                     <small>At</small>
                                 </div>
                                 <div class="col-sm-5 born">
-                                    <strong class="paragraphe2">{{ $contrat->apprenant->lieuNaissance }}</strong>
+                                    <strong class="paragraphe2">{{ $contrat->apprenant->lieuNaissance }} </strong>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +192,7 @@
                         <div class="col-md-6 col-sm-6">
                             <p>
                                 <strong>
-                                    MASTER PROFESSIONNEL 
+                                    LICENCE PROFESSIONNELLE 
                                 </strong>
                             </p>
                         </div>                        
@@ -209,14 +210,14 @@
                                 <div class="col-md-6 col-sm-6">
                                     <p>
                                         <strong>{{ $contrat->specialite->title }}</strong><br>
-                                        <span>{{ $contrat->specialite->slug }}</span>
+                                        <strong>{{ $speciality[$contrat->specialite->slug] }}</strong>
                                     </p>
                                 </div>
                                 <div class="col-md-4 col-sm-4">
                                     <p style="line-height: 12px">
                                         <strong>Mention:</strong>
                                         <span><b id="{{ 'mention-'. $contrat->id }}"></b></span>
-                                        <br><small>Grade:</small><br><strong>Fait à Yaoundé, le</strong><br><small>Issued in Yaounde, on the
+                                        <br><small>Grade:</small><br><strong>Fait à Yaoundé, le</strong><br><small>Issued at Yaoundé, on
                                     </p>
                                 </div>
                                 <!-- <div class="col-md-2 col-sm-2">
@@ -226,7 +227,7 @@
                                 </div> -->
                     </div>
 
-                    <div class="row" style="line-height: 12px; margin-top: -27px">
+                    <div class="row" style="line-height: 12px; margin-top: -18px">
                         <div class="col-md-3 col-sm-3">
                             <p>
                                 <small><b>L'impétrant</b></small><br>
@@ -247,7 +248,7 @@
                                 </b></small><br>
                                 <small>
                                         The Minister of State, Minister of Higher Education, <br>
-                                        Chancellor of Academic Orders
+                                        Chancellor of Academics Orders
                                 </small>
                             </p>
                         </div>

@@ -147,7 +147,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::get('notes/pvccDla/{specialite}/{semestre}', 'NoteController@pvcc_dla')->name('notes.pvcc_dla');
     Route::get('notes/pvccYde/{specialite}/{semestre}', 'NoteController@pvcc_yde')->name('notes.pvcc_yde');
 
-    Route::get('notes/rn_intermediaire/{specialite}/{semestre}/{ville_id}/{type?}', 'NoteController@rn_intermediaire')->name('notes.rn_intermediaire');
+    Route::get('notes/rn_intermediaire/{specialite}/{semestre}/{ville_id}/{session}', 'NoteController@rn_intermediaire')->name('notes.rn_intermediaire');
     Route::get('notes/rn_intermediaireDouala/{specialite}/{semestre}/{type?}', 'NoteController@rn_intermediaireDouala')->name('notes.rn_intermediaireDouala');
     Route::get('notes/rn_intermediaireYaounde/{specialite}/{semestre}/{type?}', 'NoteController@rn_intermediaireYaounde')->name('notes.rn_intermediaireYaounde');
 

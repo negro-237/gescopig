@@ -195,7 +195,10 @@ class ApprenantController extends AppBaseController
     public function edit(Apprenant $apprenant)
     {
         $academicYears = [];
+        $countries = array();
         $ay = $this->academicYearRepository->all();
+        $p_countries = $this->countryRepository->all();
+
         foreach ($ay as $a){
             $academicYears[$a->id] = $a->debut.'/'.$a->fin;
         }
@@ -206,7 +209,11 @@ class ApprenantController extends AppBaseController
             return redirect(route('apprenants.index'));
         }
 
-        return view('apprenants.edit', compact('apprenant', 'academicYears'));
+        foreach($p_countries as $country){
+            $countries[$country->id] = strtoupper($country->nom);
+        }
+
+        return view('apprenants.edit', compact('apprenant', 'academicYears', 'countries'));
     }
 
     /**
