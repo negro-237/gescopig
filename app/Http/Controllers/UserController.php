@@ -24,7 +24,7 @@ class UserController extends Controller
     public function __construct(UserRepository $userRepository)
     {
         $this->middleware('auth');
-        $this->middleware(['role:Admin']);
+        $this->middleware(['role:Admin|student']);
         $this->userRepository = $userRepository;
     }
 
@@ -103,14 +103,16 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = $this->userRepository->findWithoutFail($id);
-        $input = $request->except('roles');
+
+        if($request->password) $input = $request->except('roles');
+        else $input = $request->except('roles', 'password');
+       
         $this->userRepository->update($input, $user->id);
 
-        if($request->roles <> ''){
+        if($request->roles <> '') {
             $user->syncRoles($request->roles);
-        }
-        else{
-            $user->roles()->detach();
+        } else {
+                $user->roles()->detach();
         }
 
         Flash::success('User updated sucesfully');
@@ -149,13 +151,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function changePassword(Request $request){
+    public function changePassword(Request $request) {
         $validatedData = $request->validate([
             'password' => 'min:8|required_with:confirm|same:confirmer',
         ]);
         $oldPassword = $request->input('oldPassword');
         $password = $request->input('password');
-        if(Hash::check($oldPassword, Auth::user()->password)){
+        if(Hash::check($oldPassword, Auth::user()->password)) {
             $id = Auth::user()->id;
             $user = User::findOrFail($id); 
             $user->password = $password;
@@ -190,6 +192,29 @@ class UserController extends Controller
         ->where('user_id', $id)
         ->get();
         return view('users.show-logs', compact('logs', 'user'));
+    }
+
+    public function passwordReset() {
+        return view('users.password-reset');
+    }
+
+    public function changePasswordReset(Request $request) {
+
+        $request->validate([
+            'password' => 'min:8|required_with:confirm|same:confirmer',
+        ]);
+
+        $id = Auth::user()->id;
+        $user = User::findOrFail($id);
+
+        $user->password = $request->input('password');
+        $user->state = 1;
+
+        $user->save();
+
+        return redirect()->route('home');
+        
+        //return back()->with('success', 'mot de passe modifé avec succès.');
     }
 
 }

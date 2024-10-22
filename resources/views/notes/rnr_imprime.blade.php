@@ -151,6 +151,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Session/ Session:</th>
+                                                    <!-- <td><span class="text-4">session 1</span></td> -->
                                                     <td><span class="text-4">{{ substr_replace($session, ' ', strlen($session)-1,0) }}</span></td>
                                                 </tr>
                                             </table>
@@ -174,6 +175,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="text-right">Année académique / Academic Year:</th>
+                                                   <!--  <td class="text-left"><span class="text-4">2023-2024</span></td> -->
                                                     <td class="text-left"><span class="text-4">{{ $academicYear->debut }}-{{ $academicYear->fin }} </span></td>
                                                 </tr>
                                             </table>

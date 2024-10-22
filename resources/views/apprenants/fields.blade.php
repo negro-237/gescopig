@@ -468,7 +468,7 @@
 @can('observation trois')
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-md-12">
-        <button type="button" class="Show3 btn btn-default">Directeur des études</button>
+        <button type="button" class="Show3 btn btn-default">Directeur Délégué</button>
         <button type="button" class="Hide3 btn btn-default" style="display:none;">Masquer </button>
     </div>
 </div>

@@ -169,7 +169,7 @@
                                         </strong>
                                     @elseif($contrat->apprenant->dateNaissance->formatLocalized('%B') == "December")
                                         <strong>
-                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d Decembre %Y') }}
+                                            {{ $contrat->apprenant->dateNaissance->formatLocalized('%d Décembre %Y') }}
                                         </strong> 
                                     @endif
                                     <!-- <strong>à 1h56 minutes</strong> -->

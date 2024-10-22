@@ -67,6 +67,16 @@
                             ), $contrat->inscription_status, ['class' => 'form-control']
                         )!!}
                     </div>
+                    @if($contrat->type === 'Pre-Inscription')
+                        <div class="form-group col-md-4">
+                            {!! Form::label('type', 'Type de contrat :') !!}
+                            {!! Form::select('type', array( 
+                                    'Inscription' => 'Inscription',
+                                    'Pre-Inscription' => 'Pre-Inscription',
+                                ), $contrat->type, ['class' => 'form-control']
+                            )!!}
+                        </div>
+                    @endif
                     @endcan 
                 </div>
             </div>

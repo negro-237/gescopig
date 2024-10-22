@@ -69,7 +69,7 @@ class NoteController extends Controller
         $this->specialityCode = [
             'BF' => 1,
             'CG' => 2,
-            'CMD' => 3,
+            'CMD' => 5,
             'TL' => 4,
             'MAMES' => 1,
             'MACMAD' => 2,
@@ -80,8 +80,9 @@ class NoteController extends Controller
             'MATRAS' => 7,
             'MAFIDA' => 7,
             'EMBA' => 8,
-            'NM' => 9,
-            'MSD' => 10
+            'NM' => 3,
+            'MSD' => 6,
+            'MIAIE' => 8
         ];
     }
 
@@ -866,7 +867,7 @@ class NoteController extends Controller
         ->where('specialite_id', $specialite->id)
         ->whereIn('cycle_id', $cycle_array)
         ->where('contrats.academic_year_id', $aa->id)
-        ->where('inscription_status', '<>', 'RAS')
+        //->where('inscription_status', '<>', 'RAS')
         ->get();
 
         return view('notes.deliberation', compact('specialite', 'semestre', 'contrats'));
@@ -1253,7 +1254,7 @@ class NoteController extends Controller
             ->where('specialite_id', $specialite)
             ->whereIn('cycle_id', $cycle_array)
             ->where('contrats.academic_year_id', $aa->id)
-            ->where('inscription_status', '<>', 'RAS')
+            //->where('inscription_status', '<>', 'RAS')
             ->get();
         /* $contrats = $this->contratRepository->findWhere([
             'specialite_id' => $specialite, 

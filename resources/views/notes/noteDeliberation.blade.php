@@ -31,11 +31,13 @@
                             <td>{{ $enseignement->ecue->title }}</td>
                             @if($type == 'session1')
                                 <td>
-                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first() ? $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del1 : 0, ['class' => 'form-control', ($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session1 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20 ]) }}
+                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first() ? $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del1 : 0, ['class' => 'form-control', 'step' => 'any', 'max' => 20 ]) }}
+                                    <!-- {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first() ? $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del1 : 0, ['class' => 'form-control', ($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session1 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20 ]) }} -->
                                 </td>
                             @elseif($type == 'session2')
                                 <td>
-                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control',($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20]) }}
+                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control', 'step' => 'any', 'max' => 20]) }}
+                                    <!-- {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control',($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20]) }} -->
                                 </td>
                             @endif
                         </tr>

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\AcademicYear as AnneeAcademic;
+use App\Helpers\AcademicYear;
 use App\Http\Requests\CreateMedicalRequest;
 //use App\Http\Requests\UpdateMedicalRequest;
 use App\Models\Medical;
-use App\Models\AcademicYear;
 use App\Models\Apprenant;
 use App\Models\Contrat;
 use App\Repositories\MedicalRepository;
-use App\Repositories\AcademicYearRepository;
 use App\Repositories\ApprenantRepository;
 use Illuminate\Http\Request;
 use Flash;;
@@ -29,14 +27,14 @@ class MedicalController extends AppBaseController
  
     public function __construct(
         MedicalRepository $medicalRepository, 
-        AcademicYearRepository $academicRepository,
+        AcademicYear $academicYear,
         ApprenantRepository $apprenantRepository,
         Request $request)
     {
-        $this->middleware('role:nurses');
+        $this->middleware(['role:nurses|Admin']);
 
         $this->medicalRepository = $medicalRepository;
-        $this->academicRepository = $academicRepository;
+        $this->academicYear = $academicYear::getCurrentAcademicYear();
         $this->apprenantRepository = $apprenantRepository;
     }
 
@@ -73,7 +71,7 @@ class MedicalController extends AppBaseController
     public function store(CreateMedicalRequest $request)
     {
         $input = $request->all();
-        $input['academic_id'] = $this->academicRepository->currentAcademicYear()->id;
+        $input['academic_id'] = $this->academicYear;
 
         $medical = $this->medicalRepository->create($input);
 
@@ -161,13 +159,13 @@ class MedicalController extends AppBaseController
         if (empty($medical)) {
             Flash::error('Medical not found');
 
-            return redirect(route('medicals.index'));
+            return redirect(route('medicals.index', ['id' => $medical->student_id]));
         }
 
         $this->medicalRepository->delete($id);
 
         Flash::success('Medical deleted successfully.');
 
-        return redirect(route('medicals.index'));
+        return redirect(route('medicals.index', ['id' => $medical->student_id]));
     }
 }

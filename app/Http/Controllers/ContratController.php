@@ -16,10 +16,12 @@ use App\Repositories\ContratRepository;
 use App\Repositories\CycleRepository;
 use App\Repositories\SpecialiteRepository;
 use App\Repositories\VilleRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use DB;
 use App\Notifications\SendMailStudentNotification;
+use App\Notifications\CreateUserAccountNotification;
 
 
 class ContratController extends Controller
@@ -31,8 +33,9 @@ class ContratController extends Controller
     protected $contratRepository;
     protected $academicYearRepository;
     protected $villeRepository;
+    protected $userRepository;
 
-    public function __construct(ContratRepository $contratRepository, AcademicYearRepository $academicYearRepository ,ApprenantRepository $apprenantRepository, SpecialiteRepository $specialiteRepository, CycleRepository $cycleRepository, VilleRepository $villeRepository)
+    public function __construct(ContratRepository $contratRepository, AcademicYearRepository $academicYearRepository ,ApprenantRepository $apprenantRepository, SpecialiteRepository $specialiteRepository, CycleRepository $cycleRepository, VilleRepository $villeRepository, UserRepository $userRepository)
     {
         $this->contratRepository = $contratRepository;
         $this->apprenantRepository = $apprenantRepository;
@@ -42,6 +45,7 @@ class ContratController extends Controller
         $this->anneeAcademique = AcademicYear::find($inscrip);
         $this->academicYearRepository = $academicYearRepository;
         $this->villeRepository = $villeRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -316,8 +320,24 @@ class ContratController extends Controller
      */
     public function update(UpdateContratRequest $request, Contrat $contrat)
     {
+        if($request->type && $request->type === 'Inscription') {
+            
+            $password = 'PIG' . random_int(10000, 99999);
 
-        $policy = $this->contratRepository->update($request->all(),$contrat->id);
+            $full_name = $contrat->apprenant->nom . ' ' . $contrat->apprenant->prenom;
+            
+            $user = $this->userRepository->create([
+                'name' => $full_name,
+                'email' => $contrat->apprenant->email,
+                'password' => $password  
+            ]);
+
+            $user->assignRole('student');
+
+            $user->notify(new CreateUserAccountNotification($contrat->apprenant->email, $password, $full_name));
+        }
+
+        $policy = $this->contratRepository->update($request->all(), $contrat->id);
         
        /*  if($contrat->inscription_status == "RAS" && $policy->inscription_status != "RAS") {
 
@@ -340,5 +360,27 @@ class ContratController extends Controller
     {
         $this->contratRepository->delete($contrat->id);
         return redirect()->route('contrats.index');
+    }
+
+    public function absences(Request $request) {
+
+        $current_academic = $this->academicYearRepository->findWhere(['actif' => true])->first();
+
+        $student = $this->apprenantRepository->findWhere(['email' => auth()->user()->email])->first();
+        
+        $absences =  $student->contrats->where('academic_year_id', $current_academic->id)->first()->absences;
+
+        return view('contrats.absence', compact('absences'));
+    }
+
+    public function paiments(Request $request) {
+
+        $current_academic = $this->academicYearRepository->findWhere(['actif' => true])->first();
+
+        $student = $this->apprenantRepository->findWhere(['email' => auth()->user()->email])->first();
+        
+        $paiments =  $student->contrats->where('academic_year_id', $current_academic->id)->first()->versements;
+
+        return view('contrats.paiment', compact('paiments'));
     }
 }

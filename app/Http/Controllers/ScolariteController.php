@@ -241,16 +241,16 @@ class ScolariteController extends Controller
             // Add more lines as needed
         ];
 
-       /*  $textLines = [
-            'Matricule: FOUE30071998' ,
-            'Noms: FOUELEFACK FOSSO',
-            'Prenoms: Audrey Roxane',
-            'Date de Naissance: 30 Juillet 1998',
-            'Lieu de Naissance: Douala',
+        /*$textLines = [
+        'Matricule: 2023PIG405' ,
+            'Noms: MOHAMED' ,
+            'Prenoms: MOUBARAK',
+            'Date de Naissance: 15 Avril 2001',
+            'Lieu de Naissance: Ngaoundere',
             'Diplome: DIPLOME DE LICENCE PROFESSIONNELLE EN SCIENCES DE GESTION',
-            'Specialite: Negociation et Communication Multimedia',
+            'Specialite: Transport, Transit, Douane et Logistique',
             'Mention : Assez bien'
-        ]; */
+        ];*/
 
         $text = implode(PHP_EOL, $textLines);
         $qrcode = QrCode::size(60)->generate($text);
@@ -345,16 +345,16 @@ class ScolariteController extends Controller
             'Mention : ' .$result
        ];
 
-       /*  $textLines = [
-            'Matricule: 2020PIG069' ,
-            'Noms: ETAME ' ,
-            'Prenoms: Patrick Rene Kevin',
-            'Date de Naissance: 24 Mai 1995',
-            'Lieu de Naissance: 23h15 Bonaberi',
+        /*$textLines = [
+            'Matricule: 2023PIG405' ,
+            'Noms: MOHAMED' ,
+            'Prenoms: MOUBARAK',
+            'Date de Naissance: 15 Avril 2001',
+            'Lieu de Naissance: Ngaoundere',
             'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
-            'Specialite: Management de la Qualite et des Projets',
+            'Specialite: Transport, Transit, Douane et Logistique',
             'Mention : Assez bien'
-        ]; */
+        ];*/ 
 
         $text = implode(PHP_EOL, $textLines);
         $qrcode = QrCode::size(60)->generate($text);

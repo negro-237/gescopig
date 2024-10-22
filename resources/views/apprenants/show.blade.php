@@ -550,6 +550,33 @@
                                         </div>
                                     </div>
 
+                                    @if($apprenant->file_birth)
+                                        <div class="row" style="margin-top: 35px; margin-bottom: 35px;">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                                <p style="border:1px solid black; padding: 5px; background-color: black; color: white; font-weight: bold; font-size: 16px; text-align: center; font-family: Times New Roman">Documents</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <ul>
+                                                    <li>
+                                                        <a href="{{ asset('storage/uploads/' . $apprenant->file_birth . '') }}" target="_blanck" >Acte de Naissance</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ asset('storage/uploads/' . $apprenant->file_cni . '') }}" target="_blanck" >Recto cni</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ asset('storage/uploads/' . $apprenant->file_cni_verso . '') }}" target="_blanck" >Verso cni</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ asset('storage/uploads/' . $apprenant->file_diploma . '') }}" target="_blanck" >Dernier diplome</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ asset('storage/uploads/' . $apprenant->file_receipt . '') }}" target="_blanck" >Récu de versement</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 

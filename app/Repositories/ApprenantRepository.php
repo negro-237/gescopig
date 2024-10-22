@@ -66,7 +66,7 @@ class ApprenantRepository extends BaseRepository
     private function getApprenantInput($request)
     {
         $inscrip = AcademicYearModel::find($request->input('academic_year_id'));
-        $suffixe = $inscrip->apprenants()->withTrashed()->count() == 0 ? 1 : $inscrip->apprenants()->withTrashed()->count() + 133;
+        $suffixe = $inscrip->apprenants()->withTrashed()->count() == 0 ? 1 : $inscrip->apprenants()->withTrashed()->count() + 233;
         $matricule = $inscrip->fin. 'PIG'. str_pad($suffixe,3,0,STR_PAD_LEFT);
         $inputApprenant = $request->only('nom', 'prenom', 'sexe', 'addresse', 'tel', 'phone', 'matricule', 'dateNaissance', 'lieuNaissance', 'nationalite', 'civilite', 'email', 'quartier', 'academic_year_id', 'etablissement_provenance', 'academic_mail', 'diplome', 'situation_professionnelle', 'region', 'entreprise', 'annee1',
         'etablissement1', 'ville1', 'classe1', 'diplome1', 'annee2', 'etablissement2', 'ville2', 
@@ -97,5 +97,9 @@ class ApprenantRepository extends BaseRepository
         ];
 
         return $ville[$id_ville];
+    }
+
+    public function save($array) {
+        return $student = $this->create($array);
     }
 }

@@ -82,7 +82,7 @@
         </form>
 
         <a href="{{ url('/password/reset') }}">I forgot my password</a><br>
-        <a href="{{ url('/register') }}" class="text-center">Register a new membership</a>
+        <a href="{{ url('/pre-register-one') }}" class="text-center">Pré-Inscription</a>
 
     </div>
     <!-- /.login-box-body -->

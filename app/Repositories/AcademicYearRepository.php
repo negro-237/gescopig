@@ -23,4 +23,8 @@ class AcademicYearRepository extends BaseRepository
     public function currentAcademicYear() {
         return AcademicYear::where('actif', true)->first();
     }
+
+    public function lastAcademicYear() {
+        return AcademicYear::all()->last();
+    }
 }

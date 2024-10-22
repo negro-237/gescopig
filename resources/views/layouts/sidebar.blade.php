@@ -34,6 +34,28 @@
             {{--<li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>--}}
             {{--<li><a href="{{ route('generate-pdf') }}"><i class="fa fa-link"></i> <span>generer un pdf</span></a></li>--}}
 
+            @can('student view absence')
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-link"></i>
+                        <span>Historique</span>
+                        <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a> 
+                    <ul class="treeview-menu">
+                        @can('student view absence')
+                            <li>
+                                <a href="{!! url('policies/absences') !!}">Absences</a>
+                            </li>
+                            <li>
+                                <a href="{!! url('policies/paiments') !!}">Versements</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+
+            @endcan
+
             @can('print diplomes')
                 <li class="treeview">
                     <a href="#"><i class="fa fa-link"></i> <span>Diplomation</span>

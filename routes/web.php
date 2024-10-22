@@ -10,7 +10,7 @@
 |
 */
 
-
+use App\Notifications\RegisterNotification;
 
 Auth::routes();
 Route::prefix('admin')->namespace('Back')->group(function () { 
@@ -120,10 +120,20 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('permissions', 'PermissionController');
     Route::resource('users', 'UserController');
 
-    // Route permettant d'afficher le formulaire de modification du mot de passe
-    Route::get('user/password','UserController@password')->name('user.password');
-    // Route permettant de sauvegarder le nouveau mot de passe
-    Route::post('user/password','UserController@changePassword')->name('user.password');
+    Route::group(['middleware' => ['role:Admin']], function ($route) {
+        // Route permettant d'afficher le formulaire de modification du mot de passe
+        $route->get('user/password','UserController@password')->name('user.password');
+        // Route permettant de sauvegarder le nouveau mot de passe
+        $route->post('user/password','UserController@changePassword')->name('user.password');
+    });
+
+    Route::group(['middleware' => ['role:student']], function ($route) {
+        $route->get('user/password-reset','UserController@passwordReset')->name('user.password-reset');
+        $route->post('user/password-reset','UserController@changePasswordReset')->name('user.password.reset');
+
+        $route->get('policies/absences','ContratController@absences');
+        $route->get('policies/paiments','ContratController@paiments');
+    });
 
     Route::get('absences/test', 'AbsenceController@test');
 
@@ -289,3 +299,26 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::delete('medicals/{id}', 'MedicalController@destroy')->name('medicals.destroy');
 });
 
+Route::get('pre-register-one', 'PreRegisterController@registerOne')->name('pre-register.one');
+Route::post('pre-register-one', 'PreRegisterController@postRegisterOne')->name('pre-register.one.post');
+
+Route::get('pre-register-two', 'PreRegisterController@createStepTwo')->name('pre-register.two');
+Route::post('pre-register-two', 'PreRegisterController@postRegisterTwo')->name('pre-register.two.post');
+
+Route::get('pre-register-three', 'PreRegisterController@createStepThree')->name('pre-register.three');
+Route::post('pre-register-three', 'PreRegisterController@postRegisterThree')->name('pre-register.three.post');
+
+Route::get('pre-register-four', 'PreRegisterController@createStepFour')->name('pre-register.four');
+Route::post('pre-register-four', 'PreRegisterController@postRegisterFour')->name('pre-register.four.post');
+
+Route::get('pre-register-five', 'PreRegisterController@createStepFive')->name('pre-register.five');
+Route::post('pre-register-five', 'PreRegisterController@postRegisterFive')->name('pre-register.five.post');
+
+Route::get('storage', function() {
+    //\Artisan::call('storage:link');
+//return $number = 'PIG'.random_int(10000, 99999);
+ /* App\User::find(54)->notify(new RegisterNotification([
+    'nom' => 'pepita',
+    'prenom' => 'boss'
+ ])); */
+});

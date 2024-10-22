@@ -46,7 +46,45 @@
                 </div>
             </div>
         </div>
-
     </div>
+    @can('student view dashboard')
+        <div class="row">
+            <div class="col-md-6 clearfix">
+                <div class="small-box CG bg-green">
+                    <div class="inner">
+                        <h3>
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">
+                                    {{ $absences }}
+                                </font>
+                            </font>
+                        </h3>
+                    </div>
+                    <div class="icon">
+                        <i class=""></i>
+                    </div>
+                    <small class="small-box-footer">Nombre d'heures d'absences</small>
+                    </div>
+                </div>
+            <div class="col-md-6 clearfix">
+            <div class="small-box CG bg-green">
+                    <div class="inner">
+                        <h3>
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">
+                                   {{ $amount }} / {{ $account }} FCFA
+                                </font>
+                            </font>
+                        </h3>
+                    </div>
+                    <div class="icon">
+                        <i class=""></i>
+                    </div>
+                    <small class="small-box-footer">Solde</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan
 </div>
 @endsection

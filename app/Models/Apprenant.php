@@ -157,7 +157,14 @@ class Apprenant extends Model
         'groupe_sanguin',
         'rhesus',
 
-        'remarques_eventuelles'
+        'remarques_eventuelles',
+
+        // documents
+        'file_birth',
+        'file_cni',
+        'file_cni_verso',
+        'file_receipt',
+        'file_diploma',
 
     ];
 

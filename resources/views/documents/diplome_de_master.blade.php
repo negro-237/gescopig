@@ -209,7 +209,7 @@
                                 <div class="col-md-6 col-sm-6">
                                     <p>
                                         <strong>{{ $contrat->specialite->title }}</strong><br>
-                                        <span>{{ $contrat->specialite->slug }}</span>
+                                        <span>{{ $speciality[$contrat->specialite->slug] }}</span>
                                     </p>
                                 </div>
                                 <div class="col-md-4 col-sm-4">
