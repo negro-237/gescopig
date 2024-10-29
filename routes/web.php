@@ -125,6 +125,8 @@ Route::prefix('')->middleware('auth')->group(function () {
         $route->get('user/password','UserController@password')->name('user.password');
         // Route permettant de sauvegarder le nouveau mot de passe
         $route->post('user/password','UserController@changePassword')->name('user.password');
+
+        $route->post('students/account', 'UserController@addStudentAccount')->name('students.account');
     });
 
     Route::group(['middleware' => ['role:student']], function ($route) {

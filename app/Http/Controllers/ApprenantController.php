@@ -62,7 +62,8 @@ class ApprenantController extends AppBaseController
     public function index(Request $request)
     {
         $this->apprenantRepository->pushCriteria(new RequestCriteria($request));
-        $apprenants = $this->apprenantRepository->all();
+        //$apprenants = $this->apprenantRepository->all();
+        $apprenants = Apprenant::latest()->take(20)->get();
         return view('apprenants.index')
             ->with('apprenants', $apprenants);
     }

@@ -1,6 +1,7 @@
 
 <table class="table table-responsive results" id="apprenants-table">
         <thead>
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <tr>
             <th>Matricule</th>
             <th>Name</th>
@@ -46,7 +47,11 @@
                         @can('students medical')
                             <a href="{!! route('medicals.index', [$apprenant->id]) !!}" class='btn btn-default btn-xs' alt="Fiche medicale"><i class="glyphicon glyphicon-paperclip"></i></a>
                         @endcan
-                        
+                        @can('create student account')
+                            <span class="btn btn-default btn-xs">
+                                <i class="glyphicon glyphicon-plus" name="icon" title="Ajouter un compte" email="{{ $apprenant->email }}" ></i>
+                            </span>
+                        @endcan
                     </div>
                     {!! Form::close() !!}
                 </td>
@@ -60,6 +65,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jq-3.3.1/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-flash-1.5.6/b-html5-1.5.6/b-print-1.5.6/datatables.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -99,8 +105,58 @@
                 ]
             });
 
-            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container() ))
+            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container() ));
         });
+    </script>
+
+    <script>
+        $(function() {
+
+            $("[name=icon]").css('cursor', 'pointer');
+
+            $("[name=icon]").each(function() {
+                $(this).click(function() {
+
+                    const email = $(this).attr('email');
+                    const url = "{{ url('students/account') }}";
+                    
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: jQuery.param({ email: email, _token: $("[name=_token]").val() }),
+                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                        success: function (response) {
+                            if(response.message === "success") {
+                                swal({
+                                    title: "Succès",
+                                    text: "Compte Utilisateur crée avec succès",
+                                    icon: "success"
+                                });
+                            } else if(response.message === "Error") {
+                                swal({
+                                    title: "Erreur",
+                                    text: "Cet Apprenant possède deja un compte",
+                                    icon: "error"
+                                });
+                            } else {
+                                swal({
+                                    title: "Erreur",
+                                    text: "Une Erreur innatendue est survenue",
+                                    icon: "error"
+                                });
+                            }
+                        },
+                        error: function () {
+                            swal({
+                                title: "Erreur",
+                                text: "La requête a échoué",
+                                icon: "error"
+                            });
+                        }
+                    })
+                })
+            })
+        })
     </script>
 
 @endsection

@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    @can('student view dashboard')
+    @role('student')
         <div class="row">
             <div class="col-md-6 clearfix">
                 <div class="small-box CG bg-green">

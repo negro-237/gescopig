@@ -10,22 +10,26 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Role;
 use App\Repositories\UserRepository;
+use App\Repositories\ApprenantRepository;
 use App\User;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use App\Notifications\CreateUserAccountNotification;
 
 class UserController extends Controller
 {
     protected $userRepository;
+    protected $apprenantRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ApprenantRepository $apprenantRepository)
     {
         $this->middleware('auth');
         $this->middleware(['role:Admin|student']);
         $this->userRepository = $userRepository;
+        $this->apprenantRepository = $apprenantRepository;
     }
 
     /**
@@ -215,6 +219,39 @@ class UserController extends Controller
         return redirect()->route('home');
         
         //return back()->with('success', 'mot de passe modifé avec succès.');
+    }
+
+    public function addStudentAccount(Request $request) {
+
+        $user = $this->userRepository->findWhere(['email' => $request->email])->first();
+
+        $student = $this->apprenantRepository->findWhere(['email' => $request->email])->first();
+        
+        if($user) return ['message' => 'Error'];
+
+        if(!$student) return ['message' => 'Error-1'];
+
+       
+        
+        DB::transaction(function () use ($user, $student, $request) {
+
+            $password = 'PIG' . random_int(10000, 99999);
+
+            $full_name = $student->nom . ' ' . $student->prenom;
+
+            $user = $this->userRepository->create([
+                'name' => $full_name,
+                'email' => $request->email,
+                'password' => $password  
+            ]);
+
+            $user->assignRole('student');
+
+            $user->notify(new CreateUserAccountNotification($student->email, $password, $full_name));
+        });
+
+        return ['message' => 'success'];
+
     }
 
 }
