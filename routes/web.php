@@ -142,12 +142,18 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::resource('catUes', 'CatUeController')->except('show');
     Route::resource('ues', 'UeController')->except('show');
 
-    Route::get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes')->name('notes.locked');
-    Route::get('notes/lock', 'NoteController@getDataForLockNotes');
     Route::get('notes/search/{n}/{type?}/{ville_id?}', 'NoteController@search')->name('notes.search');
     // Routes pour l'enregistrement des notes
     Route::get('notes/affiche/{semestre}/{specialite}', 'NoteController@affiche')->name('notes.affiche');
-    Route::get('notes/afficheNotes/{semestre}/{specialite}/{ville_id}', 'NoteController@afficheNotes')->name('notes.afficheNotes');
+    Route::group(['middleware' => ['role:Admin|CFI']], function($route) {
+        $route->get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes')->name('notes.locked');
+        $route->get('notes/lock', 'NoteController@getDataForLockNotes');
+        $route->get('notes/afficheNotes/{semestre}/{specialite}/{ville_id}', 'NoteController@afficheNotes')->name('notes.afficheNotes');
+        $route->get('notes/deliberation/{semestre}/{specialite}', 'NoteController@deliberation')->name('notes.deliberation');
+        $route->get('notes/notesDeliberation/{type}/{contrat}/{semestre}', 'NoteController@noteDeliberation')->name('notes.noteDeliberation');
+        // Enregistrer la note de délibération
+        $route->post('notes/deliberation/{semestre}/{type}/{contrat}', 'NoteController@saveDeliberation')->name('notes.saveDeliberation');
+    });
     //Route::get('notes/afficheNotesYaounde/{semestre}/{specialite}/{ville_id}', 'NoteController@afficheNotesYaounde')->name('notes.afficheNotesYaounde');
 
     Route::get('notes/imprime/{semestre}/{specialite}', 'NoteController@imprime')->name('notes.imprime');
@@ -175,12 +181,6 @@ Route::prefix('')->middleware('auth')->group(function () {
     // Enregistrer les notes de Yaoundé
     Route::post('notes2/{type}/{enseignement}', 'NoteController@storeYaounde')->name('notes.storeYaounde');
 
-    
-
-    Route::get('notes/deliberation/{semestre}/{specialite}', 'NoteController@deliberation')->name('notes.deliberation');
-    Route::get('notes/notesDeliberation/{type}/{contrat}/{semestre}', 'NoteController@noteDeliberation')->name('notes.noteDeliberation');
-    // Enregistrer la note de délibération
-    Route::post('notes/deliberation/{semestre}/{type}/{contrat}', 'NoteController@saveDeliberation')->name('notes.saveDeliberation');
     /*
         Séparer les notes de délibération de Douala et Yaoundé
         Route::get('notes/deliberationDouala/{semestre}/{specialite}', 'NoteController@deliberationDouala')->name('notes.deliberationDouala');

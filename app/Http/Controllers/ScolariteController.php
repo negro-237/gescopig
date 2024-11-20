@@ -390,7 +390,8 @@ class ScolariteController extends Controller
             $filterVilles[$ville->id] = $ville->nom. '-' .$ville->code;
         }
 
-        $contrats = $this->contratRepository->all();
+        //$contrats = $this->contratRepository->all();
+        $contrats = \App\Models\Contrat::latest()->take(100)->get();
         $today = Carbon::today();
         $echeanciers = $this->echeancierRepository->findWhere(['academic_year_id' => $currentYear->id, ['date', '<=', $today]]);
         return view('scolarites.inscrits', compact('contrats', 'currentYear', 'echeanciers', 'filterYears', 'filterCycles', 'filterSpecialites', 'filterVilles'));

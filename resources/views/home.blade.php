@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="overflow: hidden">
     <div class="row">
         <div class="clearfix"></div>
 
@@ -48,43 +48,100 @@
         </div>
     </div>
     @role('student')
-        <div class="row">
-            <div class="col-md-6 clearfix">
-                <div class="small-box CG bg-green">
-                    <div class="inner">
-                        <h3>
-                            <font style="vertical-align: inherit;">
+        @if($corkage_amount > 0)
+            <div class="row">
+                <div class="col-md-3 clearfix">
+                    <div class="small-box CG bg-green">
+                        <div class="inner">
+                            <h3>
                                 <font style="vertical-align: inherit;">
-                                    {{ $absences }}
+                                    <font style="vertical-align: inherit;">
+                                        {{ $absences }}
+                                    </font>
                                 </font>
-                            </font>
-                        </h3>
-                    </div>
-                    <div class="icon">
-                        <i class=""></i>
-                    </div>
-                    <small class="small-box-footer">Nombre d'heures d'absences</small>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class=""></i>
+                        </div>
+                        <small class="small-box-footer">Nombre d'heures d'absences</small>
                     </div>
                 </div>
-            <div class="col-md-6 clearfix">
-            <div class="small-box CG bg-green">
-                    <div class="inner">
-                        <h3>
-                            <font style="vertical-align: inherit;">
+                <div class="col-md-4 clearfix">
+                    <div class="small-box CG bg-green">
+                        <div class="inner">
+                            <h3>
                                 <font style="vertical-align: inherit;">
-                                   {{ $amount }} / {{ $account }} FCFA
+                                    <font style="vertical-align: inherit;">
+                                        {{ $corkage_amount }}
+                                    </font>
                                 </font>
-                            </font>
-                        </h3>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class=""></i>
+                        </div>
+                        <small class="small-box-footer">Bourse</small>
                     </div>
-                    <div class="icon">
-                        <i class=""></i>
-                    </div>
-                    <small class="small-box-footer">Solde</small>
+                </div>
+                <div class="col-md-5 clearfix">
+                    <div class="small-box CG bg-green">
+                        <div class="inner">
+                            <h3>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+                                        {{ $amount }}/{{ $account + $corkage_amount }} FCFA
+                                    </font>
+                                </font>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class=""></i>
+                        </div>
+                        <small class="small-box-footer">Solde</small>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @else 
+            <div class="row">
+                <div class="col-md-6 clearfix">
+                    <div class="small-box CG bg-green">
+                        <div class="inner">
+                            <h3>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+                                        {{ $absences }}
+                                    </font>
+                                </font>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class=""></i>
+                        </div>
+                        <small class="small-box-footer">Nombre d'heures d'absences</small>
+                        </div>
+                    </div>
+                <div class="col-md-6 clearfix">
+                <div class="small-box CG bg-green">
+                        <div class="inner">
+                            <h3>
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+                                    {{ $amount }} / {{ $account }} FCFA
+                                    </font>
+                                </font>
+                            </h3>
+                        </div>
+                        <div class="icon">
+                            <i class=""></i>
+                        </div>
+                        <small class="small-box-footer">Solde</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     @endcan
 </div>
 @endsection

@@ -71,6 +71,7 @@ class NoteController extends Controller
             'CG' => 2,
             'CMD' => 5,
             'TL' => 4,
+            'AIE' => 7,
             'MAMES' => 1,
             'MACMAD' => 2,
             'MAMREH' => 3,
@@ -78,11 +79,11 @@ class NoteController extends Controller
             'MAFINE' => 5,
             'MAQUAP' => 6,
             'MATRAS' => 7,
-            'MAFIDA' => 7,
+            'MAFIDA' => 8,
             'EMBA' => 8,
             'NM' => 3,
             'MSD' => 6,
-            'MIAIE' => 8
+            'MIAIE' => 9
         ];
     }
 

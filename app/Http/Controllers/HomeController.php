@@ -38,14 +38,16 @@ class HomeController extends Controller
             $current_academic = $this->academicYearRepository->findWhere(['actif' => true])->first();
 
             $student = $this->apprenantRepository->findWhere(['email' => auth()->user()->email])->first();
-
+            
             $absences =  $student->contrats->where('academic_year_id', $current_academic->id)->first()->absences->where('justify', false)->count();
             
             $account = $student->contrats->where('academic_year_id', $current_academic->id)->first()->cycle->echeanciers->where('academic_year_id', $current_academic->id)->sum('montant');
             
             $amount =  $student->contrats->where('academic_year_id', $current_academic->id)->first()->versements->sum('montant');
 
-            return view('home', compact('absences', 'account', 'amount'));
+            $corkage_amount =  - $student->contrats->where('academic_year_id', $current_academic->id)->first()->corkages->where('reduction', true)->sum('montant');
+            
+            return view('home', compact('absences', 'account', 'amount', 'corkage_amount'));
         } 
 
         return view('home');
