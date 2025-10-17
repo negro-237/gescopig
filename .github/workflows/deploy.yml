@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Test SSH connection
+      - name: Deploy to VPS
         run: |
           eval $(ssh-agent -s)
           mkdir -p ~/.ssh
@@ -29,4 +29,22 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-          ssh -vvv -p $SSH_PORT $SSH_USER@$SSH_HOST "echo 'SSH OK!'"
+          # Aller dans le dossier du projet et récupérer le dernier code
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && git pull origin main"
+
+          # Installer les dépendances PHP
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && composer install --no-interaction --prefer-dist --optimize-autoloader"
+
+          # Lancer les migrations
+          #ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan migrate --force"
+
+          # Nettoyer les caches Laravel
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan view:clear"
+
+          # Créer le lien storage
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan storage:link || true"
+
+          # Optionnel : build du front (npm) et redémarrage Apache
+          # ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && npm install && npm run build"
+          # ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo systemctl restart apache2"
+
