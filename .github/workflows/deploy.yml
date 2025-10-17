@@ -35,7 +35,7 @@ jobs:
           # Installer les dépendances PHP
           ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && composer install --no-interaction --prefer-dist --optimize-autoloader"
 
-          # Lancer les migrations
+          # Lancer les migrationus
           #ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan migrate --force"
 
           # Nettoyer les caches Laravel
