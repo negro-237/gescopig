@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up SSH
+      - name: Test SSH connection
         run: |
           eval $(ssh-agent -s)
           mkdir -p ~/.ssh
@@ -29,32 +29,4 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Pull latest code on server
-        run: |
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && git pull origin main"
-
-      - name: Install PHP dependencies
-        run: |
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && composer install --no-interaction --prefer-dist --optimize-autoloader"
-
-      # - name: Run migrations
-      #   run: |
-      #     ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan migrate --force"
-      #
-      # - name: Clear and optimize Laravel caches
-      #   run: |
-      #     ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan view:clear"
-      #
-      # - name: Link storage
-      #   run: |
-      #     ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan storage:link || true"
-
-      # Si tu veux aussi builder le front
-      #- name: Build frontend
-      #  run: |
-      #    ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && npm install && npm run build"
-
-      # Si tu veux redémarrer Apache
-      #- name: Restart Apache
-      #  run: |
-      #    ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo systemctl restart apache2"
+          ssh -vvv -p $SSH_PORT $SSH_USER@$SSH_HOST "echo 'SSH OK!'"
