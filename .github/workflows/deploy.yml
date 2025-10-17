@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy to Moon VPS
 
 on:
   push:
@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DEPLOY_PATH: /home/admin/web/gescopig.com/public_html
+      DEPLOY_PATH: /home/web/gescopig.com/public_html
       SSH_USER: admin
       SSH_HOST: 180.149.199.229
       SSH_PORT: 5804
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to VPS
+      - name: Set up SSH
         run: |
           eval $(ssh-agent -s)
           mkdir -p ~/.ssh
@@ -29,22 +29,38 @@ jobs:
           ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-          # Aller dans le dossier du projet et récupérer le dernier code
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && git pull origin main"
+      - name: Deploy to VPS
+        run: |
+          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "
+            if [ -d $DEPLOY_PATH/.git ]; then
+              echo 'Repo exists, pulling latest code...'
+              cd $DEPLOY_PATH
+              git reset --hard
+              git clean -fd
+              git pull origin main
+            else
+              echo 'Repo does not exist, cloning...'
+              mkdir -p $(dirname $DEPLOY_PATH)
+              git clone https://github.com/negro-237/gescopig.git $DEPLOY_PATH
+            fi
 
-          # Installer les dépendances PHP
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && composer install --no-interaction --prefer-dist --optimize-autoloader"
+            # Installer les dépendances PHP
+            cd $DEPLOY_PATH
+            composer install --no-interaction --prefer-dist --optimize-autoloader
 
-          # Lancer les migrationus
-          #ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan migrate --force"
+            # Lancer les migrations Laravel
+            #php artisan migrate --force
 
-          # Nettoyer les caches Laravel
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan view:clear"
+            # Nettoyer les caches
+            php artisan config:clear
+            php artisan cache:clear
+            php artisan route:clear
+            php artisan view:clear
 
-          # Créer le lien storage
-          ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && php artisan storage:link || true"
+            # Créer le lien storage
+            php artisan storage:link || true
 
-          # Optionnel : build du front (npm) et redémarrage Apache
-          # ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd $DEPLOY_PATH && npm install && npm run build"
-          # ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "sudo systemctl restart apache2"
-
+            # Optionnel : build front et redémarrage Apache
+            # npm install && npm run build
+            # sudo systemctl restart apache2
+          "
