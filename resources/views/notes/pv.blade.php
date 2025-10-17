@@ -105,7 +105,7 @@
             <div class="col-xs-6">
                 <h1 class="text-center">PROCES VERBAL DE DELIBERATION</h1>
                 <h1 class="text-center">Résultat des Examens {{ $semestre->title. ' ' .$session }}</h1>
-                <!-- <h1 class="text-center">Résultat des Enjambements Semestre 2 session1</h1 -->>
+                <!-- <h1 class="text-center">Résultat des Enjambements Semestre 2 session1</h1 -->
                 <h1 class="text-center">Domaine : {{ ($contrats->first()->specialite->slug == "MAFIDA") ? "Sciences Juridiques, Politiques et Administratives" : "Sciences Economiques et de Gestion" }}</h1>
                 <h1 class="text-center">Mention : {{ ($contrats->first()->specialite->slug == "MAFIDA") ? "Sciences Juridiques" : "Sciences de Gestion" }}</h1>
                 <h1 class="text-center">Spécialité : {{ $contrats->first()->specialite->slug. " (" .$contrats->first()->specialite->title. ")" }}</h1>
@@ -132,7 +132,7 @@
                     </tr>
                     <tr > {{-- Affichage des entete d'unite d'enseignement --}}
                         @foreach($ues as $ue)
-                            <th class="text-center" colspan="{{ 2*$enseignements->where('ue_id', $ue->id)->where('ville_id', 2)->count() +2 }}">{{ $ue->code .$specialityCode .$semestre->id. ': ' .$ue->title }}<!--<br/>{{ $ue->id}}--></th>
+                            <th class="text-center" colspan="{{ 2*$enseignements->where('ue_id', $ue->id)->where('ville_id', 1)->count() +2 }}">{{ $ue->code .$specialityCode .$semestre->id. ': ' .$ue->title }}<!--<br/>{{ $ue->id}}--></th>
                         @endforeach
                         <th>{{ sizeof($ues) }}</th>
                         <th rowspan="4" class="vertical bg-info"><div><span>Moyenne Semestrielle</span></div></th>
@@ -141,7 +141,7 @@
                     <tr class="info">
                         @foreach($ues as $ue)
                             @foreach($ec as $ecue)
-                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 2)->first())
+                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 1)->first())
                                     <th>Ecue</th>
                                     <th>Credit</th>
                                 @endif
@@ -158,20 +158,20 @@
                         @foreach($ues as $ue)
                             @php($sum = 0)
                             @foreach($ec as $ecue)
-                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 2)->first())
+                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 1)->first())
                                     <th class="vertical"><div><p>{!! wordwrap($ecue->title, 26, '<br />', true) !!} <!--<br/>{{$ecue->id}}--></p></div></th>
                                     <th>{{ $ecue->enseignements->where('specialite_id', $specialite->id)->first()->credits }}</th>
                                     @php($sum +=  $ecue->enseignements->where('specialite_id', $specialite->id)->first()->credits)
                                 @endif
                             @endforeach
-                            <!-- <th>{{ $enseignements->where('ue_id', $ue->id)->where('ville_id', 2)->sum('credits') }}</th> -->
+                            <!-- <th>{{ $enseignements->where('ue_id', $ue->id)->where('ville_id', 1)->sum('credits') }}</th> -->
                             <th>{{ $sum }}</th>
                         @endforeach
                     </tr>
                     <tr>
                         @foreach($ues as $ue)
                             @foreach($ec as $ecue)
-                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 2)->first())
+                                @if($ecue->enseignements->where('ue_id', $ue->id)->where('specialite_id', $specialite->id)->where('ville_id', 1)->first())
                                     <th>Note</th>
                                     <th>Pond</th>
                                 @endif

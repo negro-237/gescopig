@@ -71,7 +71,7 @@ class NoteController extends Controller
             'CG' => 2,
             'CMD' => 5,
             'TL' => 4,
-            'AIE' => 7,
+            'IAIE' => 7,
             'MAMES' => 1,
             'MACMAD' => 2,
             'MAMREH' => 3,
@@ -230,7 +230,7 @@ class NoteController extends Controller
             $ecues[] = $ecue->id;
         }
 
-        $ens = $this->enseignementRepository->findWhereIn('ecue_id', $ecues)->where('academic_year_id', $this->anneeAcademic->id)->where('specialite_id', $specialite)->where('ville_id', 2);
+        $ens = $this->enseignementRepository->findWhereIn('ecue_id', $ecues)->where('academic_year_id', $this->anneeAcademic->id)->where('specialite_id', $specialite)->where('ville_id', 1);
         
         return view('notes.fiche-yaounde', compact('ec', 'semestre', 'specialite', 'ens'));
     }
@@ -319,7 +319,7 @@ class NoteController extends Controller
         $aa = ($request->ay_id == null) ? $this->anneeAcademic : $this->academicYearRepository->findWithoutFail($request->ay_id);
         $ens = [];
         foreach($ecues as $ec){
-            $enseignement = $ec->enseignements->where('specialite_id', $specialite->id)->where('ville_id', 2)->where('academic_year_id', '==', $aa->id)->first();
+            $enseignement = $ec->enseignements->where('specialite_id', $specialite->id)->where('ville_id', 1)->where('academic_year_id', '==', $aa->id)->first();
             isset($enseignement->id) ? array_push($ens, $enseignement->id) : '';
         }
         $enseignements = $this->enseignementRepository->findWhereIn('id', $ens);
@@ -432,7 +432,7 @@ class NoteController extends Controller
             ->select('contrats.*')
             ->where('specialite_id', $specialite)
             ->where('cycle_id', $cycle)
-            ->where('ville_id', 2)
+            ->where('ville_id', 1)
             ->where('contrats.academic_year_id', $enseignement->academic_year_id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
@@ -598,7 +598,7 @@ class NoteController extends Controller
             ->where('specialite_id', $spec)
             ->whereIn('cycle_id', $cycle_array)
             ->where('contrats.academic_year_id', $aa->id)
-            ->where('inscription_status', '<>', 'RAS')
+            //->where('inscription_status', '<>', 'RAS')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom');
 
@@ -1026,7 +1026,7 @@ class NoteController extends Controller
         $enseignements = []; //conteneur dans lequel seront chargés tous les enseignements concernés
 
         foreach($ecues as $ecue){
-            $ens = $ecue->enseignements->where('specialite_id', $contrat->specialite_id)->where('ville_id', 2)->where('academic_year_id', '==', $contrat->academic_year_id)->first();
+            $ens = $ecue->enseignements->where('specialite_id', $contrat->specialite_id)->where('ville_id', 1)->where('academic_year_id', '==', $contrat->academic_year_id)->first();
             ($ens) ? $enseignements[] = $ens : '';
         }
 
@@ -1269,7 +1269,7 @@ class NoteController extends Controller
     public function releve($session, $contrat, $semestre) {
 
         $contrat = $this->contratRepository->findWithoutFail($contrat);
-
+        
         $academicYear = $contrat->academic_year;
 
         $semestre = $this->semestreRepository->findWithoutFail($semestre);
@@ -1287,7 +1287,7 @@ class NoteController extends Controller
         foreach ($enseignements as $enseignement) {
             $ues[$enseignement->ue_id] = $enseignement->ue;
         }
-
+        //return $ues;
         $specialityCode = $this->specialityCode[$contrat->specialite->slug];
 
         return view('notes.rnr_imprime', compact('contrat', 'semestre', 'enseignements', 'ues', 'academicYear', 'session', 'specialityCode'));
@@ -1442,7 +1442,7 @@ class NoteController extends Controller
             ->where('specialite_id', $spec)
             ->where('cycle_id', $cycle->id)
             ->where('contrats.academic_year_id', $aa->id)
-            ->where('ville_id', 2)
+            ->where('ville_id', 1)
             ->where('inscription_status', '<>', 'RAS')
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
@@ -1457,7 +1457,7 @@ class NoteController extends Controller
         
         $enseignements = $specialite->enseignements
         ->where('academic_year_id', $aa->id)
-        ->where('ville_id', 2)
+        ->where('ville_id', 1)
         ->whereIn('ecue_id', $ecues);
 
         $eq = $specialite->ecues->where('academic_year_id', $aa->id)->where('semestre_id', $sem);
@@ -1509,19 +1509,23 @@ class NoteController extends Controller
       
     }
 
-    public function lock_notes($session, $academicYear, $level) {
+    public function lock_notes($session, $academicYear, $semester) {
        
         $this->middleware(['role:Admin']);
  
         $academic = $this->academicYearRepository->find($academicYear);
-        if($level == '1') $policies = $academic->policies->whereIn('cycle_id', [1, 10]);
-        else if($level == '2') $policies = $academic->policies->whereIn('cycle_id', [2, 11]);
-        else if($level == '3') $policies = $academic->policies->whereIn('cycle_id', [3, 12]);
-        else if($level == '4') $policies = $academic->policies->whereIn('cycle_id', [4, 13]);
-        else $policies = $academic->policies()->whereIn('cycle_id', [5, 14]);
+        if($semester == '1' || $semester == '2') $policies = $academic->policies->whereIn('cycle_id', [1, 10]);
+        else if($semester == '3' || $semester == '4') $policies = $academic->policies->whereIn('cycle_id', [2, 11]);
+        else if($semester == '5' || $semester == '6') $policies = $academic->policies->whereIn('cycle_id', [3, 12]);
+        else if($semester == '7' || $semester == '8') $policies = $academic->policies->whereIn('cycle_id', [4, 13]);
+        else $policies = $academic->policies()->whereIn('cycle_id', [5, 14]); 
         
         $dataArray = json_decode($policies, true);
         $transformedArray = array_values($dataArray);
+
+        $ens_ids = $academic->enseignements->where('semester_id', $semester)->pluck('id');
+
+        //return $policies = $academic->policies->notes()->whereIn('enseignement_id', $ens_ids);
 
         DB::beginTransaction();
        
@@ -1529,17 +1533,17 @@ class NoteController extends Controller
 
             foreach ($transformedArray as $policy) {
                 
-                $p = $this->contratRepository->find($policy['id']);
+                $notes = $policy->notes->whereIn('enseignement_id', $ens_ids);
                 
-                if($p->notes->count() > 0) {
+                if($notes || $notes->count() > 0) {
                     
-                    foreach($p->notes as $note) {
+                    foreach($notes as $note) {
 
                         $session === 'session1' ? 
                             $note->state_session1 = !$note['state_session1']
                             :
                             $note->state_session2 = !$note['state_session2'];
-                        $note->save();
+                        $note->save(); 
                     }
 
                 }

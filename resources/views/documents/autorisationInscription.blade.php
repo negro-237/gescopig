@@ -36,7 +36,7 @@
             }
         }
         section{
-            margin-top: 250px;
+            margin-top: 240px;
         }
 
         .footer p{
@@ -73,7 +73,8 @@
                         <p>
                             {{ (($contrat->apprenant->sexe == 'Homme')? 'M. ' : 'Mme/Mlle ') .$contrat->apprenant->nom. ' ' .$contrat->apprenant->prenom  }} né(e)
                             le {{ $contrat->apprenant->dateNaissance->format('d/m/Y'). ' à ' .$contrat->apprenant->lieuNaissance }} est autorisé(e) à s'inscrire à PIGIER-CAMEROUN en {{ $contrat->cycle->label. ' ' .$contrat->cycle->niveau. ', spécialité ' .$contrat->specialite->title }}
-                            sur le compte de <strong>ESCM PIGIER CAMEROUN N° 10044-00251211001-35</strong> ouvert à <strong><i>CCA-BANK (Crédit Communautaire d'Afrique).</i></strong>
+                            sur le compte de <strong>Ecole Supérieure de Commerce et de Management Pigier Cameroun N° 10044-00251211001-35</strong> ouvert à <strong><i>CCA-BANK (Crédit Communautaire d'Afrique)</i></strong>, ou sur le compte 
+                            <strong>Ecole Supérieure de Commerce et de Management Pigier Cameroun N° 10040-01002-38502381401-03</strong> ouvert à <strong><i>BANGE BANK CAMEROUN</i></strong>.
                         </p>
                     </div>
                     <div class="text-center observation">

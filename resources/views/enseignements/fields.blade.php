@@ -89,6 +89,7 @@
 
 <div class="form-group">
     {{ Form::hidden('specialite_id', $specialite, ['class' => 'form-control']) }}
+    {{ Form::hidden('semester_id', $semestre) }}
 </div>
 
 <!-- Submit Field -->

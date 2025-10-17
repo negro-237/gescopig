@@ -40,6 +40,8 @@ class VersementController extends Controller
     }
 
     public function store(CreateVersementRequest $request, $reincription){
+            $this->middleware(['role:CC']);
+            return $reincription;
 //        if($reincription && $request->input('apprenant_id')){
 //            $apprenant = $this->apprenantRepository->findWithoutFail($request->input('apprenant_id'));
 //            $specialite = $apprenant->contrats->last()->specialite_id;

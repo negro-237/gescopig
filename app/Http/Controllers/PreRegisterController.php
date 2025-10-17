@@ -111,7 +111,7 @@ class PreRegisterController extends Controller
             'diplome' => 'required',
             'etablissement_provenance' => 'required',
             'situation_professionnelle' => 'required',
-            'entreprise' => 'required',
+            'entreprise' => 'nullable',
         ]);
 
         $student = array_merge($request->session()->get('student'), $validatedData);
@@ -124,12 +124,18 @@ class PreRegisterController extends Controller
     public function createStepThree(Request $request) {
 
         $cities = $this->villeRepository->all();
-        $cycles = $this->cycleRepository->all();
+        $list_cycles = $this->cycleRepository->all();
+        $cycles = [];
+        
         $spe = $this->specialiteRepository->all();
         $specialites = [];
 
         foreach($spe as $specialite) {
             $specialites[$specialite->id] = $specialite->slug.' | '.$specialite->title;
+        }
+
+        foreach($list_cycles as $cycle) {
+            $cycles[$cycle->id] = $cycle->label.' '.$cycle->niveau;
         }
 
         $student = $request->session()->get('student');
@@ -203,7 +209,7 @@ class PreRegisterController extends Controller
         $suffixe = $last_academic->apprenants()->withTrashed()->count() == 0 ? 1 : $last_academic->apprenants()->withTrashed()->count() + 233;
         $student['matricule'] = $last_academic->fin. 'PIG'. str_pad($suffixe, 3, 0, STR_PAD_LEFT);
 
-        DB::transaction(function () use ($student, $request) {
+        return DB::transaction(function () use ($student, $request) {
 
             $path = 'public/uploads';
 
@@ -226,7 +232,7 @@ class PreRegisterController extends Controller
             $file_diploma = $request->file('file_diploma');
             $student['file_diploma'] = Str::random(20) . '.' . $file_diploma->getClientOriginalExtension();
             $file_diploma->storeAs($path, $student['file_diploma']);
-
+            return $student;
             $student_save = $this->apprenantRepository->save($student);
 
             $this->contratRepository->firstOrCreate([
@@ -256,9 +262,9 @@ class PreRegisterController extends Controller
 
         });
 
-        Flash::success('Vos Pré-inscription a bien été enregistrée, nous vous reviendrons à l\'addresse: ' . $student['email']);
+        $request->session()->flush();
 
-        //$request->session()->flush();
+        Flash::success('Vos Pré-inscription a bien été enregistrée, nous vous reviendrons à l\'addresse: ' . $student['email']);
 
         return redirect()->back();
     }

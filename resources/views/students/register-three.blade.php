@@ -13,7 +13,7 @@
                         </div>  
                         <div class="form-group">
                             <label for="cycle" class="control-label">Niveau<span class="required">*</span></label>
-                            {!! Form::select('cycle_id', $cycles->pluck('label', 'id'), isset($student['cycle_id']) ? $student['cycle_id'] :  null, ['class' => 'form-control ' .($errors->has('cycle_id') ? 'is-invalid' : ''), 'placeholder' => 'Sélectionnez la spécialité']) !!}
+                            {!! Form::select('cycle_id', $cycles, isset($student['cycle_id']) ? $student['cycle_id'] :  null, ['class' => 'form-control ' .($errors->has('cycle_id') ? 'is-invalid' : ''), 'placeholder' => 'Sélectionnez la spécialité']) !!}
                             {!! $errors->first('cycle_id', '<small class="invalid-feedback">:message</small>') !!}
                         </div>
                     </div>

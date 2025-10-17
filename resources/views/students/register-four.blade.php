@@ -1,14 +1,14 @@
 @extends('layouts.register_app')
 @section('content')
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <h3 class="register-heading">Informations année scolaire</h3>
+        <h3 class="register-heading">Informations relatives aux parents</h3>
             <form action="{{ route('pre-register.four') }}" method="post">
                 <div class="row register-form">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="p_name" class="control-label">Nom du parent<span class="required">*</span></label>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="text" class="form-control {!! $errors->has('p_name') ? 'is-invalid' : '' !!}" placeholder="Ex: Tapondjou Petito" value="{{ $student['p_name'] ?? '' }}" name="p_name" id="p_name" />
+                            <input type="text" class="form-control {!! $errors->has('p_name') ? 'is-invalid' : '' !!}" placeholder="Ex: ......" value="{{ $student['p_name'] ?? '' }}" name="p_name" id="p_name" />
                             {!! $errors->first('p_name', '<small class="invalid-feedback">:message</small>') !!}
                         </div>  
                         <div class="form-group">
@@ -18,7 +18,7 @@
                         </div>
                         <div class="form-group">
                             <label for="p_phone" class="control-label">Portable<span class="required">*</span></label>
-                            <input type="text" class="form-control {!! $errors->has('p_phone') ? 'is-invalid' : '' !!}" placeholder="Ex: 678660800" value="{{ $student['p_phone'] ?? '' }}" name="p_phone" id="p_phone" />
+                            <input type="text" class="form-control {!! $errors->has('p_phone') ? 'is-invalid' : '' !!}" placeholder="Ex: ......" value="{{ $student['p_phone'] ?? '' }}" name="p_phone" id="p_phone" />
                             {!! $errors->first('p_phone', '<small class="invalid-feedback">:message</small>') !!}
                         </div>
                     </div>

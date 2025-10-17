@@ -48,8 +48,8 @@
                             <a href="{!! route('medicals.index', [$apprenant->id]) !!}" class='btn btn-default btn-xs' alt="Fiche medicale"><i class="glyphicon glyphicon-paperclip"></i></a>
                         @endcan
                         @can('create student account')
-                            <span class="btn btn-default btn-xs">
-                                <i class="glyphicon glyphicon-plus" name="icon" title="Ajouter un compte" email="{{ $apprenant->email }}" ></i>
+                            <span class="btn btn-default btn-xs icon-student" email="{{ $apprenant->email }}">
+                                <i class="glyphicon glyphicon-plus" title="Ajouter un compte" ></i>
                             </span>
                         @endcan
                     </div>
@@ -65,7 +65,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs/jq-3.3.1/jszip-2.5.0/dt-1.10.18/b-1.5.6/b-flash-1.5.6/b-html5-1.5.6/b-print-1.5.6/datatables.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -110,28 +110,25 @@
     </script>
 
     <script>
-        $(function() {
-
-            $("[name=icon]").css('cursor', 'pointer');
-
-            $("[name=icon]").each(function() {
+        $(document).ready(function() {
+            $('.icon-student').each(function() {
                 $(this).click(function() {
-
                     const email = $(this).attr('email');
                     const url = "{{ url('students/account') }}";
-                    
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: jQuery.param({ email: email, _token: $("[name=_token]").val() }),
-                        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                        success: function (response) {
+                    const token = $('[name="_token"]').val();
+
+                    var xhttp = new XMLHttpRequest();
+
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            const response = JSON.parse(this.responseText);
+                           
                             if(response.message === "success") {
-                                swal({
+                               swal({
                                     title: "Succès",
                                     text: "Compte Utilisateur crée avec succès",
                                     icon: "success"
-                                });
+                                })
                             } else if(response.message === "Error") {
                                 swal({
                                     title: "Erreur",
@@ -139,6 +136,38 @@
                                     icon: "error"
                                 });
                             } else {
+                                swal({
+                                    title: "Erreur",
+                                    text: "Une Erreur innatendue est survenue",
+                                    icon: "error"
+                                });
+                            }
+                        }
+                    };
+                    xhttp.open("POST", url, true);
+                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhttp.send("email="+email+"&_token="+token);
+                    
+                  /*   $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: jQuery.param({ email: email, _token: token }),
+                        contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                        success: function (response) {
+                            if(response.message === "success") {
+                               swal({
+                                    title: "Succès",
+                                    text: "Compte Utilisateur crée avec succès",
+                                    icon: "success"
+                                })
+                            } else if(response.message === "Error") {
+                                swal({
+                                    title: "Erreur",
+                                    text: "Cet Apprenant possède deja un compte",
+                                    icon: "error"
+                                });
+                            } else {
+                                alert('......')
                                 swal({
                                     title: "Erreur",
                                     text: "Une Erreur innatendue est survenue",
@@ -153,7 +182,7 @@
                                 icon: "error"
                             });
                         }
-                    })
+                    }) */
                 })
             })
         })

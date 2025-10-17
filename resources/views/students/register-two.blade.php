@@ -45,9 +45,8 @@
                             {!! $errors->first('situation_professionnelle', '<small class="invalid-feedback">:message</small>') !!}
                         </div>
                         <div class="form-group">
-                            <label for="entreprise" class="control-label">Entreprise<span class="required">*</span></label>
-                            <input type="text" class="form-control {!! $errors->has('entreprise') ? 'is-invalid' : '' !!}" placeholder="Ex: Pigier Cameroun*" value="{{ $student['entreprise'] ?? '' }}" name="entreprise" id="entreprise" />
-                            {!! $errors->first('entreprise', '<small class="invalid-feedback">:message</small>') !!}
+                            <label for="entreprise" class="control-label">Entreprise</label>
+                            <input type="text" class="form-control" placeholder="Ex: Pigier Cameroun*" value="{{ $student['entreprise'] ?? '' }}" name="entreprise" id="entreprise" />
                         </div>
                     </div>
                     <div class="col-md-12">

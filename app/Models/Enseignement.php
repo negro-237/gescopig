@@ -60,6 +60,7 @@ class Enseignement extends Model
         'credits',
         'tronc_commun_id',
         'ville_id',
+        'semester_id'
         //'enseignement_type'
 
     ];
@@ -78,7 +79,8 @@ class Enseignement extends Model
         'mhTotal' => 'integer',
         'mhEff' => 'integer',
         'ville_id' => 'integer',
-        'enseignement_type' => 'string'
+        'enseignement_type' => 'string',
+        'semester_id' => 'integer'
 
     ];
 

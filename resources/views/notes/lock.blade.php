@@ -25,14 +25,14 @@
                         {!! Form::token() !!}
                     </div>
 
+                    <div class="form-group col-sm-4">
+                        {!! Form::label('level', 'Selectionner le niveau:') !!}
+                        {!! Form::select('level',['1' => 'Semestre 1', '2' => 'Semestre 2', '3' => 'Semestre 3', '4' => 'Semestre 4', '5' => 'Semestre 5', '6' => 'Semestre 6', '7' => 'Semestre 7', '8' => 'Semestre 8', '9' => 'Semestre 9', '10' => 'Semestre 10'],null,['class' => 'form-control']) !!}
+                    </div>
+
                     <div class="form-group col-sm-3">
                         {!! Form::label('session', 'Selectionner la session:') !!}
                         {!! Form::select('session',['session1' => 'session1', 'session2' => 'session2'],null,['class' => 'form-control']) !!}
-                    </div>
-
-                    <div class="form-group col-sm-4">
-                        {!! Form::label('level', 'Selectionner le niveau:') !!}
-                        {!! Form::select('level',['1' => 'Licence 1', '2' => 'Licence 2', '3' => 'Licence 3', '4' => 'Master 1', '5' => 'Master 2'],null,['class' => 'form-control']) !!}
                     </div>
 
                     <div class="form-group col-sm-12">

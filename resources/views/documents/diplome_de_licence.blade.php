@@ -35,7 +35,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid" id="rnr" style="padding: 8px; margin-top: 230px">
+    <div class="container-fluid" id="rnr" style="padding: 8px; margin-top: 210px">
         <div class="row">
             <div class="col-md-12 col-sm-12">
 

@@ -113,11 +113,23 @@ class ScolariteController extends Controller
         $aa = ($request->ay_id == null) ? AcademicYear::find($this->academicYear) : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
         $specialite = $this->specialiteRepository->findWithoutFail($spec);
-        $cycle = $this->cycleRepository->findWithoutFail($c);
+        //$cycle = $this->cycleRepository->findWithoutFail($c);
+        if($c == 1) {
+            $cycle = [1, 10];
+        } else if($c == 2) {
+            $cycle = [2, 11];
+        } else if ($c == 3) {
+            $cycle = [3, 12];
+        } else if($c == 4) {
+            $cycle = [4, 13];
+        } else {
+            $cycle = [5, 14];
+        }
+        
         $contrats_list = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->whereIn('cycle_id', $cycle)
             ->where('contrats.academic_year_id', $aa->id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
@@ -151,7 +163,7 @@ class ScolariteController extends Controller
             "MAFIDA" => "Taxation and Business Law",
             "MAMES" => "Corporate Management",
             "MAMREH" => "Management des ressources humaines",
-            "MSD" => "Management et strategie digitale"
+            "MSD" => "Management and Digital Strategy"
         ];
 
         return view("documents.attestation_reussite", compact('contrats', 'session_en', 'session_fr', 'date', 'speciality'));
@@ -174,15 +186,27 @@ class ScolariteController extends Controller
         return view('licence', compact('cycles','model', 'method', 'academicYears', 'cur_year'));
     }
 
-    public function select_admis_licence($c, $spec, Request $request){
+    public function select_admis_licence($c, $spec, Request $request) {
         $aa = ($request->ay_id == null) ? AcademicYear::find($this->academicYear) : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
         $specialite = $this->specialiteRepository->findWithoutFail($spec);
-        $cycle = $this->cycleRepository->findWithoutFail($c);
+        //$cycle = $this->cycleRepository->findWithoutFail($c);
+        if($c == 1) {
+            $cycle = [1, 10];
+        } else if($c == 2) {
+            $cycle = [2, 11];
+        } else if ($c == 3) {
+            $cycle = [3, 12];
+        } else if($c == 4) {
+            $cycle = [4, 13];
+        } else {
+            $cycle = [5, 14];
+        }
+
         $contrats_list = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->whereIn('cycle_id', $cycle)
             ->where('contrats.academic_year_id', $aa->id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
@@ -208,6 +232,7 @@ class ScolariteController extends Controller
             "BF" => "Banking and Corporate Finance",
             "TL" => "Transport, Customs and Logistic Transit",
             "CMD" => "Communication, Marketing and Digital",
+            "MSD" => "Management and Digital Strategy"
         ];
 
         $average = $contrats[0]->semestre_infos->sum('moyenne') / 2;
@@ -237,20 +262,21 @@ class ScolariteController extends Controller
             'Lieu de Naissance: ' .Str::ascii($contrats[0]->apprenant->lieuNaissance),
             'Diplome: DIPLOME DE LICENCE PROFESSIONNEL EN SCIENCES DE GESTION',
             'Specialite: ' .Str::ascii($contrats[0]->specialite->title),
-            'Mention: '.$result
+            //'Mention : Bien'
+            'Mention : ' .$result
             // Add more lines as needed
         ];
 
-        /*$textLines = [
-        'Matricule: 2023PIG405' ,
-            'Noms: MOHAMED' ,
-            'Prenoms: MOUBARAK',
-            'Date de Naissance: 15 Avril 2001',
-            'Lieu de Naissance: Ngaoundere',
+       /*  $textLines = [
+            'Matricule: FATO18111991' ,
+            'Noms: FATOUMATA RAOUDA' ,
+            'Prenoms: Ibrahima',
+            'Date de Naissance: 18 Novembre 1991',
+            'Lieu de Naissance: Garoua, departement de la Benoue a 11h47',
             'Diplome: DIPLOME DE LICENCE PROFESSIONNELLE EN SCIENCES DE GESTION',
-            'Specialite: Transport, Transit, Douane et Logistique',
+            'Specialite: Negociation et Communication Multimedia',
             'Mention : Assez bien'
-        ];*/
+        ];  */
 
         $text = implode(PHP_EOL, $textLines);
         $qrcode = QrCode::size(60)->generate($text);
@@ -275,15 +301,27 @@ class ScolariteController extends Controller
         return view('master', compact('cycles','model', 'method', 'academicYears', 'cur_year'));
     }
 
-    public function select_admis_master($c, $spec, Request $request){
+    public function select_admis_master($c, $spec, Request $request) {
         $aa = ($request->ay_id == null) ? AcademicYear::find($this->academicYear) : $this->academicYearRepository->findWithoutFail($request->ay_id);
 
         $specialite = $this->specialiteRepository->findWithoutFail($spec);
-        $cycle = $this->cycleRepository->findWithoutFail($c);
+        //$cycle = $this->cycleRepository->findWithoutFail($c);
+        if($c == 1) {
+            $cycle = [1, 10];
+        } else if($c == 2) {
+            $cycle = [2, 11];
+        } else if ($c == 3) {
+            $cycle = [3, 12];
+        } else if($c == 4) {
+            $cycle = [4, 13];
+        } else {
+            $cycle = [5, 14];
+        }
+
         $contrats_list = Contrat::join('apprenants', 'apprenant_id', '=', 'apprenants.id')
             ->select('contrats.*')
             ->where('specialite_id', $spec)
-            ->where('cycle_id', $cycle->id)
+            ->whereIn('cycle_id', $cycle)
             ->where('contrats.academic_year_id', $aa->id)
             ->orderBy('apprenants.nom')
             ->orderBy('apprenants.prenom')
@@ -311,8 +349,8 @@ class ScolariteController extends Controller
             "MACMAD" => "Communication, Marketing and Digital",
             "MAQUAP" => "Quality and Project Management",
             "MAFIDA" => "Taxation and Business Law",
-            "MAMES" => "Business Management",
-            "MAMREH" => "Management des ressources humaines"
+            "MAMES" => "Corporate Management",
+            "MAMREH" => "Human Resources Management"
         ];
 
         $average = $contrats[0]->semestre_infos->sum('moyenne') / 2;
@@ -334,7 +372,7 @@ class ScolariteController extends Controller
             $result = "Excellent";
         }
 
-        $textLines = [
+       /*  $textLines = [
             'Matricule: ' .$contrats[0]->apprenant->matricule,
             'Noms: ' .Str::ascii($contrats[0]->apprenant->nom),
             'Prenoms: ' .Str::ascii($contrats[0]->apprenant->prenom),
@@ -342,19 +380,20 @@ class ScolariteController extends Controller
             'Lieu de Naissance: ' .Str::ascii($contrats[0]->apprenant->lieuNaissance),
             'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
             'Specialite: ' .Str::ascii($contrats[0]->specialite->title),
+            //'Mention : Assez bien'
             'Mention : ' .$result
-       ];
+        ]; */
 
-        /*$textLines = [
-            'Matricule: 2023PIG405' ,
-            'Noms: MOHAMED' ,
-            'Prenoms: MOUBARAK',
-            'Date de Naissance: 15 Avril 2001',
-            'Lieu de Naissance: Ngaoundere',
+        $textLines = [
+            'Matricule: 2022PIG459' ,
+            'Noms: FOINDING TELA' ,
+            'Prenoms: Nael Jordy',
+            'Date de Naissance: 23 Mai 1996',
+            'Lieu de Naissance: Douala',
             'Diplome: DIPLOME DE MASTER PROFESSIONNEL EN SCIENCES DE GESTION',
-            'Specialite: Transport, Transit, Douane et Logistique',
+            'Specialite: Audit et Controle de Gestion',
             'Mention : Assez bien'
-        ];*/ 
+        ];
 
         $text = implode(PHP_EOL, $textLines);
         $qrcode = QrCode::size(60)->generate($text);

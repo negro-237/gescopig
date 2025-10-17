@@ -36,8 +36,8 @@
                                 </td>
                             @elseif($type == 'session2')
                                 <td>
-                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control', 'step' => 'any', 'max' => 20]) }}
-                                    <!-- {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control',($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20]) }} -->
+                                   <!--  {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control', 'step' => 'any', 'max' => 20]) }} -->
+                                    {{ Form::number($enseignement->id, $contrat->notes->where('enseignement_id', $enseignement->id)->first()->del2, ['class' => 'form-control',($contrat->notes->where('enseignement_id', $enseignement->id)->first()->state_session2 == 0) ? 'readonly' : '', 'step' => 'any', 'max' => 20]) }}
                                 </td>
                             @endif
                         </tr>
@@ -46,7 +46,7 @@
                 </table>
             </div>
             <div class="box-footer text-right m">
-                {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                {{Form::submit('Save', ['class' => 'btn btn-primary', 'id' => 'submit'])}}
                 <a href="{{ route('notes.deliberation', [$enseignement->ecue->semestre_id, $contrat->specialite_id]) }}" class="btn btn-default">
                     Back
                 </a>
@@ -79,6 +79,18 @@
                 }
             })
         })
+
+        let notes = @json($contrat->notes);
+        let block = false;
+
+        for(let i = 0; i < notes.length; i++) {
+            if(notes[i].state_session1 == 0 || notes[i].state_session2 == 0) {
+                block = true;
+            }
+        }
+
+        //if(block) $('#submit').prop('disabled', true);
+        
     });
 
 </script>

@@ -89,7 +89,7 @@ class EnseignementController extends AppBaseController
 //        return $enseignementDataTable->render('enseignements.index');
 
          
-        $enseignements = $this->enseignementRepository->findWhere(['academic_year_id' => $this->anneeAcademic]);
+        $enseignements = $this->enseignementRepository->findWhere(['academic_year_id' => $this->anneeAcademic, 'credits' => 14]);
         
         /*
         $enseignements = Enseignement::where('academic_year_id', '=', $this->anneeAcademic)->where('ville_id', 1)->get();*/
@@ -116,7 +116,7 @@ class EnseignementController extends AppBaseController
      * @return Response
      */
     public function create($semestre, $specialite)
-    {
+    { 
         $ens= $this->contratEnseignantRepository->findWhere(['academic_year_id' => $this->anneeAcademic]);
         $ue = $this->ueRepository->all();
         //Variables dans lesquelles seront sockées les ecues et les enseignants filtrés
@@ -144,7 +144,7 @@ class EnseignementController extends AppBaseController
 
         $villes = Ville::all();
 
-        return view('enseignements.create', compact('ecues', 'enseignants', 'ues', 'specialite', 'villes'));
+        return view('enseignements.create', compact('ecues', 'enseignants', 'ues', 'specialite', 'villes', 'semestre'));
     }
 
 
@@ -251,6 +251,7 @@ class EnseignementController extends AppBaseController
     {
         $input = $request->except(['ecue_id', 'specialite_id']);
         $input['academic_year_id'] = $this->anneeAcademic;
+        //return $input;
         //dd($input);
         //return $request->specialite_id;
         // check if enseignement already exists
@@ -330,6 +331,7 @@ class EnseignementController extends AppBaseController
     public function edit($id, Request $request)
     {
         $enseignement = $this->enseignementRepository->findWithoutFail($id);
+        $semestre = $enseignement->semester_id;
 
         if($enseignement->ingoing)
             $enseignement->ingoing->delete();
@@ -363,7 +365,7 @@ class EnseignementController extends AppBaseController
         }
         $villes = Ville::all();
 
-        return view('enseignements.edit', compact('enseignement', 'ecues', 'enseignants', 'specialite', 'ues', 'villes'));
+        return view('enseignements.edit', compact('enseignement', 'ecues', 'enseignants', 'specialite', 'ues', 'villes', 'semestre'));
     }
 
     public function editMh($id){

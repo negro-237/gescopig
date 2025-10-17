@@ -127,7 +127,7 @@
 
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6 col-xs-6">
-                                            <p>Nationalité  : {{$apprenant->nationalite}}</p>
+                                            <p>Nationalité  : {{ $apprenant->country ? ucfirst($apprenant->country->nom) : $apprenant->nationalite}}</p>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <p>Date de naissance  : {{date('d-m-Y', strtotime($apprenant->dateNaissance))}}</p>

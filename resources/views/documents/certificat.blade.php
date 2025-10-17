@@ -87,12 +87,12 @@
                     <div class="">
                         <p>Fait à Douala le </p>
 {{--                        <p>Fait à Yaounde le </p>--}}
-                        <br>
-                        <p>Le Promoteur Directeur Général et Franchisé</p>
+                       <!--  <br> -->
+                        <p>Le Président Directeur Général</p>
                         @if($titre)
                             <p>P/O: {{ $titre }}</p>
                         @endif
-                        <br>
+                        <!-- <br> -->
 
                         <p><strong>{{ ($titre) ? $signataire : "Dr Henri TAFOU" }}</strong></p>
                     </div>

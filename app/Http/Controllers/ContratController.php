@@ -253,7 +253,7 @@ class ContratController extends Controller
             [
                 'apprenant_id' => $apprenant->id,
                 'academic_year_id' => $request->input('academic_year_id'),
-                'ville_id' => $request->input('ville_id'),
+                //'ville_id' => $request->input('ville_id'),
             ],
             $input
         );

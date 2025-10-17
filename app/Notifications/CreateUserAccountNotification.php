@@ -49,7 +49,7 @@ class CreateUserAccountNotification extends Notification
         
         return (new MailMessage)
                     ->subject('Compte Utilisateur pour ' .  $this->name)
-                    ->line('Votre compte a été crée avec les identifiants suivants: ')
+                    ->line('Votre Preinscription a été validée.Ci dessous vos identifiants de connexion: ')
                     ->line('Email: ' . $this->email)
                     ->line('Password: ' . $this->password)
                     ->line('Vous devez changer ce mot de passe à votre premiere connexion')

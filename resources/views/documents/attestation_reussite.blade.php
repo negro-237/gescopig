@@ -60,17 +60,20 @@
                         <small><i>Born on <span class="lieuNaissanceen">at :</span></i></small>
                     </p>
                     <p>Inscrit.e sous le matricule N° : <b>{{ $contrat->apprenant->matricule }}</b> <br><small><i>Registration number :</i></small></p>
-                    <p>A validé la totalité des Unités d’Enseignement requises pour l’obtention du diplôme de <strong>{{ ($contrat->cycle->label == "Licence") ? "LICENCE PROFESSIONNELLE" : "MASTER PROFESSIONNEL" }}</strong>.
-                        <br><small><i>Has successfully validated all the teaching units required for the award of <strong>{{ ($contrat->cycle->label == "Licence") ? "PROFESSIONAL BACHELOR DEGREE" : "PROFESSIONAL MASTER DEGREE" }}</strong>.</i></small></p>
+                    <p>A validé la totalité des Unités d’Enseignement requises pour l’obtention du diplôme de <strong>{{ strpos($contrat->cycle->label,  "Licence") !== false ? "LICENCE PROFESSIONNELLE" : "MASTER PROFESSIONNEL" }}</strong>.
+                        <br><small><i>Has successfully validated all the teaching units required for the award of <strong>{{ strpos($contrat->cycle->label, "Licence") !== false ? "PROFESSIONAL BACHELOR DEGREE" : "PROFESSIONAL MASTER DEGREE" }}</strong>.</i></small></p>
                     <div class="row">
-                        <p class="col-xs-8"><u>Domaine</u> : <strong>SCIENCES &Eacute;CONOMIQUES ET DE GESTION</strong> <br>
+                        <p class="col-xs-7"><u>Domaine</u> : <strong>SCIENCES &Eacute;CONOMIQUES ET DE GESTION</strong> <br>
                                 <small><i><strong>Discipline : </strong>Economic Science and Business Administration</i></small></p>
-                        <p class="col-xs-4">Mention : <b id="{{ 'mention-'. $contrat->id }}"></b> <br><small><i>Distinction:</i></small></p>
+                        <p class="col-xs-5">Mention : <b id="{{ 'mention-'. $contrat->id }}"></b> <br><small><i>Distinction:</i></small></p>
                     </div>
-                    <p><b>Spécialité : <b>{{ $contrat->specialite->title }}</b> </b><br><small><i>Speciality: {{ $speciality[$contrat->specialite->slug] }}</i></small></p>
                     <div class="row">
-                        <p class="col-xs-8">Année Académique : <b>{{ $contrat->academic_year->debut. '/' .$contrat->academic_year->fin }}</b> <br><small><i>Academic Year : </i></small></p>
-                        <p class="col-xs-4"><b>Session: {{ $session_fr }} </b><br><small><i>Session: {{ $session_en }}</i></small></p>
+                        <p class="col-xs-7"><b>Spécialité : <b>{{ $contrat->specialite->title }}</b> </b><br><small><i>Speciality: {{ $speciality[$contrat->specialite->slug] }}</i></small></p>
+                        <p class="col-xs-5">Nombre de crédits capitalisés: <b>{{ strpos($contrat->cycle->label, "Licence") !== false ? "180" : "120" }}</b><br><small><i>number of credits earned:</i></small></p>
+                    </div>
+                    <div class="row">
+                        <p class="col-xs-7">Année Académique : <b>{{ $contrat->academic_year->debut. '/' .$contrat->academic_year->fin }}</b> <br><small><i>Academic Year : </i></small></p>
+                        <p class="col-xs-5"><b>Session: {{ $session_fr }} </b><br><small><i>Session: {{ $session_en }}</i></small></p>
                     </div>
                     {{--<br>--}}
                     <p>En foi de quoi la présente attestation est établie et lui est délivrée pour servir et valoir ce que de droit <strong>en attendant la remise effective dudit diplôme.</strong></p>
@@ -79,13 +82,13 @@
 
                 <div class="row">
                     <div class="col-xs-6">
-                        <p><strong>Fait à douala le :</strong><br><small><i>Done at Douala on : </i></small></p>
+                        <p><strong>Fait à Douala le :</strong><br><small><i>Done at Douala on : </i></small></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-6">
                         <p class="pull-left"><strong>Le Directeur de L'ESSEC/ The Director of ESSEC</strong></p><br><br><br><br>
-                        <p class="pull-left"><strong><u>Pr Georges Bertrand TAMOKWE PIAPTIE</u></strong></p>
+                        <p class="pull-left"><strong><u>Pr André Modeste ABATE</u></strong></p>
                     </div>
                     <div class="col-xs-6">
                         <p class="text-right"><strong>Le Responsable Académique/ The Head Teacher</strong></p><br><br><br>

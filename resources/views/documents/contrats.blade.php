@@ -155,7 +155,7 @@
                             </tr>
                             <tr>
                                 <th>Nationalité</th>
-                                <td>{{ $contrat->apprenant->nationalite }}</td>
+                                <td>{{ $contrat->apprenant->country ? ucfirst($contrat->apprenant->country->nom) : $contrat->apprenant->nationalite}}</td>
                             </tr>
                             <tr>
                                 <th>Date de Naissance</th>

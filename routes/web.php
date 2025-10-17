@@ -146,7 +146,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     // Routes pour l'enregistrement des notes
     Route::get('notes/affiche/{semestre}/{specialite}', 'NoteController@affiche')->name('notes.affiche');
     Route::group(['middleware' => ['role:Admin|CFI']], function($route) {
-        $route->get('notes/locked/{session}/{academic_year}/{level}', 'NoteController@lock_notes')->name('notes.locked');
+        $route->get('notes/locked/{session}/{academic_year}/{semester}', 'NoteController@lock_notes')->name('notes.locked');
         $route->get('notes/lock', 'NoteController@getDataForLockNotes');
         $route->get('notes/afficheNotes/{semestre}/{specialite}/{ville_id}', 'NoteController@afficheNotes')->name('notes.afficheNotes');
         $route->get('notes/deliberation/{semestre}/{specialite}', 'NoteController@deliberation')->name('notes.deliberation');
@@ -208,7 +208,7 @@ Route::prefix('')->middleware('auth')->group(function () {
     Route::get('versements/listeApprenants', 'VersementController@listeApprenants')->name('versements.listeApprenants');
     Route::get('versements/etats', 'VersementController@etats')->name('versements.etats');
     Route::get('versements/details/{id}', 'VersementController@details')->name('versements.details');
-    Route::post('versements/{id}', 'VersementController@store')->name('versements.store');
+    Route::post('versements/{id}', 'VersementController@store')->name('versements.store')->middleware(['role: CC']);
     Route::get('versements/show/{id}', 'VersementController@show')->name('versements.show');
     Route::get('versements/{id}/edit', 'VersementController@edit')->name('versements.edit');
     Route::patch('versements/{id}/update', 'VersementController@update')->name('versements.update');
@@ -317,7 +317,7 @@ Route::get('pre-register-five', 'PreRegisterController@createStepFive')->name('p
 Route::post('pre-register-five', 'PreRegisterController@postRegisterFive')->name('pre-register.five.post');
 
 Route::get('storage', function() {
-    //\Artisan::call('storage:link');
+\Artisan::call('storage:link');
 //return $number = 'PIG'.random_int(10000, 99999);
  /* App\User::find(54)->notify(new RegisterNotification([
     'nom' => 'pepita',

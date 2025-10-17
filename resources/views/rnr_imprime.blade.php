@@ -254,7 +254,7 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <p class="pull-left"><strong><u>Le Directeur de L'ESSEC/ The Director of ESSEC</u></strong></p><br><br><br>
-                                <p class="pull-left"><strong>Pr Georges Bertrand TAMOKWE PIAPTIE</strong></p>
+                                <p class="pull-left"><strong>Pr André Modeste ABATE</strong></p>
                             </div>
                             <div class="col-xs-6">
                                 <p class="text-right"><strong><u>Le Directeur Académique en charge de la Recherche et du Developpement:</u></strong></p><br><br>

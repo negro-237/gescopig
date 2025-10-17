@@ -142,6 +142,17 @@
                 </div>
             </div>
         @endif
+        @if($absences > 0 || $amount > 0)
+        <div class="row">
+            <div class="col-md-12 clearfix" style="display: flex; justify-content: flex-end">
+                <button type="button" class="btn btn-default">
+                    <a target="_blank" class="" href="https://forms.office.com/r/N2nJm7Ds5t?origin=lprLink">
+                        <span>Justifier une Absence ou un versement</span>
+                    </a>
+                </button>
+            </div>
+        </div>
+        @endif
     @endcan
 </div>
 @endsection
