@@ -63,3 +63,4 @@ jobs:
             # Optionnel : build front et redémarrage Apache
             # npm install && npm run build
             # sudo systemctl restart apache2
+          "
